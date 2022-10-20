@@ -5,7 +5,7 @@
 \usepackage[utf8]{inputenc}
 \setlength{\marginparwidth }{2cm}
 \usepackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes}
-\usepackage{xargs}   
+\usepackage{xargs}
 \usepackage{tabularx}
 \usepackage{xcolor}
 \usepackage{hyperref}
@@ -19,7 +19,7 @@
 \newcommandx{\caro}[2][1=]{\todo[linecolor=OliveGreen,backgroundcolor=OliveGreen!25,bordercolor=OliveGreen,#1]{#2}}
 
 
-\title{A gentle introduction to Power Analysis \\ with an outlook on some recent applications}
+\title{A gentle guide for using Power Analysis \\ Why it is so important and how it can be done for more complex applications}
 \author{Stella Bollmann$^*$, Rudolf Debelak$^{\dagger}$ \& Carolin Strobl$^{\dagger}$}
 \date{September 2022}
 
@@ -28,24 +28,45 @@
 
 	\bibliographystyle{chicago}
 	\maketitle
-	
+
 	\noindent $^*$ Department of Educational Sciences, University Zurich, Freiestrasse 36, 8032 Zurich, email: stella.bollmann@ife.uzh.ch \\
 	\noindent $^{\dagger}$ Department of Psychology, University Zurich, Binzmuehlestrasse 14, 8050 Zurich \\
-	
-	\section{Introduction}
-	
-	\stella{Dieses Kapitel muss stark gekürzt werden. Überlegen, ob wir es nicht sogar ganz entfernen und mit What is statistical power anfangen.}
-	
-	We have already introduced statistical tests in the previous chapter. The focus of this chapter will be on power analysis and sample size calculation. We will learn how low power has the consequence that research results produce less knowledge gain. 
-	
-	Say that in some scientific study our goal is to investigate whether a treatment increases performance in a concentration test. In order to plan this study, it is important to know how many people we need. If the sample is too small, we do not know whether a non-significant result is due to a lack of a treatment effect or due to a too small sample size. We will see that even in case of a significant test result, the knowledge gain is reduced. In this chapter, therefore, the basics of statistical power analysis are introduced and it will be explained how it is used for sample size planning.
-	
-	\section{What is statistical power?}
-	
+
+	\section*{Introduction}
+
+
+In the wake of the replication crisis in psychological research in recent years, the importance of power analysis and, in particular, sample size calculation has become increasingly emphasized as a vital component of reliable research. Reviewers and funding agencies are increasingly requesting documentations of sample size calculations or at least post-hoc power analyses. (citations)
+Unfortunately, however, power analysis is still very rarely used in psychological research (Bakker et al., 2016). And even users who are very familiar with power analysis often report that their sample design is ultimately based on other criteria. In addition, many researchers report difficulties in, for example, power analysis for complex study designs and determining the required effect sizes (Collins \& Watt, 2021).
+Possible reasons could be that although power analysis is required by many reviewers and funding agencies, to many users, it is not really clear why power is actually so important.
+\stella{Man könnte hier auch das Problem des PPV aufführen, von dem man ja weiss, dass er schwer verstanden wird (siehe Gigerenzer) und der auch zentral ist, um zu verstehen, warum Power so wichtig ist.}
+One reason of which could be that it is a rather complex concept for which there are very few understandable text books.
+And on the other hand, researchers might be confused as to which power analysis method to use for which statistical procedure or even whether an appropriate power analysis technique for their statistical procedure even exists. There are unfortunately few compact, understandable summaries for different statistical procedures as well as clear guidelines.
+Therefore, the aim of this paper is threefold:
+\begin{itemize}
+\item First guiding question: Why is power analysis needed? Introduction to the basic concept (Chapter 1 and 2)
+\item Second guiding question: What are the determining factors? General list of possible influencing factors on statistical power and overview of which of these can/must be influenced and which not (Chapter 3)
+\item Third guiding question: How can the particular determining factor sample size be calculated? Specific explanation of sample size calculation, structured on the basis of various statistical procedures which are commonly used in psychological research (Chapter 4). The following aspects are focused on for each procedure:
+\begin{itemize}
+\item Which effect size measure can be used to set the expected effect
+\item Is an analytical power analysis possible for this procedure with the common statistical software?
+\item If so, what software can be used to perform an exemplar power analysis?
+\item If no, what are the alternatives (e.g., simulations) and what should be considered when performing them?
+\end{itemize}
+\item Discussion of crucial decisions that have to be made prior to any power analysis or sample size calculation
+\end{itemize}
+
+
+\stella{Caro: evtl. könnte man den Absatz mit unserem Beispiel auch weglassen, weil das später noch mal erklärt wird und vielleicht hier den Fluss des Textes stört? Andererseits ist es vielleicht ein ganz netter teaser, warum Power so wichtig ist? Was meinst du?}
+Throughout this paper, we will use the example of a scientific study in which the goal is to investigate whether a treatment increases performance in a concentration test. In order to plan this study, it is important to know how many people we need. If the sample is too small, we do not know whether a non-significant result is due to a lack of a treatment effect or due to a too small sample size. We will see that even in case of a significant test result, the knowledge gain is reduced.
+
+In the next chapter, the basics of statistical power analysis are introduced, before we will explain the importance of power analysis calculation.
+
+\section{What is statistical power?}
+
 	In statistical testing, all calculations are based on probabilities, given the null hypothesis. When we switch from statistical testing to statistical power analysis, we have to change the underlying hypothesis conditioned on which we calculate the probabilities. In particular, we are interested in what happens if the alternative instead of the null hypothesis is true. We also call this to "condition on" the alternative hypothesis.
-	
-	In statistical testing, it is all about probabilities, and to be more precise, about conditional probabilities. This means that we examine probabilities under a certain assumption. Significance tests are based on the assumption that the null hypothesis is true. The $\alpha$ error, for example, is the probability of a false positive which is a significant result, given that the null hypothesis is true (i.e., conditional on the null hypothesis). In Table \ref{tab:error}, the case that the null hypothesis is true is represented in the left column. 
-	
+
+	In statistical testing, it is all about probabilities, and to be more precise, about conditional probabilities. This means that we examine probabilities under a certain assumption. Significance tests are based on the assumption that the null hypothesis is true. The $\alpha$ error, for example, is the probability of a false positive which is a significant result, given that the null hypothesis is true (i.e. conditional on the null hypothesis). In Table \ref{tab:error}, the case that the null hypothesis is true is represented in the left column.
+
 	\begin{table}[ht]
 		\caption{\textbf{Illustration of decision errors.}}
 		\centering
@@ -56,14 +77,14 @@
 			\midrule
 			\textbf{Test not significant}  &  True negative  & False negative  \\
 			\textbf{Test significant} &   False positive &  True positive    \\
-			
+
 			\bottomrule
 		\end{tabularx}
 		\label{tab:error}
 	\end{table}
-	
+
 	Given that the null hypothesis is true, we have two possible outcomes of the test: First, if the test result is not significant, it is a true negative. Second, if the test result is significant, it is a false positive. Let us consider the example of the treatment that increases performance in a concentration test. If the null hypothesis is true, the treatment does not increase concentration performance. Nevertheless, it is possible, due to random fluctuations in the data, that our statistical test is significant and thus indicates that the treatment increases concentration performance. This is a false positive, also called type I error. When using statistical tests, the probability of the type I error, commonly referred to as $\alpha$, can be restricted to a certain value before the analysis. $\alpha$ is usually set to 5\%. Thus, the above table can be written in terms of probabilities of decisions given a certain reality (i.e., conditional on that reality, see Table \ref{tab:errorprop}).
-	
+
 	\begin{table}[ht]
 		\caption{\textbf{Illustration of error probabilities.}}
 		\centering
@@ -74,296 +95,304 @@
 			\midrule
 			\textbf{Test not significant}  &  1 - $\alpha$  & $\beta$  \\
 			\textbf{Test significant} &   $\alpha$ &  1- $\beta$    \\
-			
+
 			\bottomrule
 		\end{tabularx}
 		\label{tab:errorprop}
 	\end{table}
-	
-	
+
+
 	For power analysis, we now need a second condition. We change the underlying reality: Instead of assuming the null hypothesis to be true, we now assume that the alternative hypothesis is true, meaning that we condition on the alternative hypothesis. This is represented by the right columns in both tables. Again, the significance test has two possible outcomes: If the test is negative, it is a false negative (also called type II error), and if the null hypothesis is rejected, it is a true positive (see first table). The corresponding probabilities are called $\beta$ (the probability of a type II error) and 1-$\beta$ (the probability of a true positive), as can be seen in the second table. 1-$\beta$ is called the power of the test. Thus, power gives an answer to the question: What is the probability that a test is significant given that the effect exists (probability of a true positive). Regarding our example, the power is the probability that the test is significant, given that the treatment does increase concentration performance.
-	
-	Probabilities can be visualized as areas. For visualizing the probabilities $\alpha$, $\beta$, and 1-$\beta$, we use probability distributions. The area under the probability distribution for a given interval represents the probability that the values in this interval occur, given the respective hypothesis. Which probability distribution we use, depends on the test statistic that in turn depends on the statistical test we use. 
-	For simplicity, we are going to use the $z$-test as an example. Its test statistic $z$ is standard normally distributed, so that we can use the normal distribution for illustration in the following. Under the null hypothesis, the expected value of the $z$-distribution is 0 and the standard deviation is 1. 
+
+	Probabilities can be visualized as areas. For visualizing the probabilities $\alpha$, $\beta$, and 1-$\beta$, we use probability distributions. The area under the probability distribution for a given interval represents the probability that the values in this interval occur, given the respective hypothesis. Which probability distribution we use, depends on the test statistic, which in turn depends on the statistical test we use.
+	For simplicity, we are going to use the $z$-test as an example. Its test statistic $z$ is standard normally distributed, so that we can use the normal distribution for illustration in the following. Under the null hypothesis, the expected value of the $z$-distribution is 0 and the standard deviation is 1.
 	For this specific distribution, the $z$-table can be used for determining the "critical value" for a particular $\alpha$. The critical value tells us, what our test decision is. We only have to look up the corresponding $z$-value for the probability 1 - $\alpha$ in case we expect the effect to be positive. This is how the critical value is determined in significance testing, or, in other words, how we decide if the test is significant.
-	
+
 	The $z$-distribution under the null hypothesis is illustrated on the left side of Figure \ref{fig:distribution}.
-	
+
 	\begin{figure}[ht]
 		\centering
-		\includegraphics[width = 0.8\textwidth]{plots/distribution_plot.png}
+		\includegraphics[width = 0.9\textwidth]{plots/distribution_plot.png}
 		\caption{$z$-distribution under the Null and the Alternative Hhpothesis}
 		\label{fig:distribution}
 	\end{figure}
-	
-	On the right side of this picture, the alternative hypothesis is shown. 
-	
+
+	On the right side of this picture, the alternative hypothesis is shown.
+
 	It has exactly the same shape as the null distribution, because it has the same variance. But it is shifted, so that its expected value is the expected value under the alternative hypothesis. If we assume the expected mean difference to be $\mu - \mu_0$, the expected effect $\delta$ is
 	\[\delta = \frac{\mu-\mu_0}{\sigma}\]
-	The expected value of the distribution for a sample of size $n$ is 
+	The expected value of the distribution for a sample of size $n$ is
 	$\sqrt{n}\frac{\mu-\mu_0}{\sigma}$,
 	and can be written as $\sqrt{n} \cdot \delta$ (for the statistical background, see box below "The $z$-distribution for the alternative hypothesis").
-	
-	The alternative hypothesis, of course, can be on either side of the null distribution, depending on whether we expect the effect to be positive or negative. In the case of a one-sided hypothesis, this is straightforward. In the example of the treatment that increases concentration performance, we expect a positive effect, because the concentration performance is expected to be higher for the population that received the treatment. If we take the example of a treatment that is supposed to decrease depression, we would expect a negative effect because depression is supposed to be lower after the treatment. Then, the alternative distribution is on the left side of the null distribution. In case of a two-sided hypothesis, $\alpha/2$ is cut off on each tail of the null distribution. However, the power is calculated with a fixed expected effect size, that is either positive or negative, meaning there is one alternative distribution on either the left or the right side. In the following, we will assume a one-sided hypothesis with a positive expected effect and thus the alternative distribution is on the right side of the null distribution, as in the picture. 
-	
+
+	The alternative hypothesis, of course, can be on either side of the null distribution, depending on whether we expect the effect to be positive or negative. In the case of a one-sided hypothesis, this is straightforward. In the example of the treatment that increases concentration performance, we expect a positive effect, because the concentration performance is expected to be higher for the population that received the treatment. If we take the example of a treatment that is supposed to decrease depression, we would expect a negative effect because depression is supposed to be lower after the treatment. Then, the alternative distribution is on the left side of the null distribution. In case of a two-sided hypothesis, $\alpha/2$ is cut off on each tail of the null distribution. However, the power is calculated with a fixed expected effect size that is either positive or negative, meaning there is one alternative distribution on either the left or the right side. In the following, we will assume a one-sided hypothesis with a positive expected effect and thus the alternative distribution is on the right side of the null distribution, as in the picture.
+
 	{\centering
 		\noindent\rule{10cm}{0.4pt}
-		
+
 	}
 	\subsection*{The $z$-distribution for the alternative hypothesis}
-	
-	
-	For a $z$-test, we consider three different distributions: 
-	
+
+
+	For a $z$-test, we consider three different distributions:
+
 	\begin{enumerate}
 		\item The distribution of the raw values
 		\item The distribution of the mean
 		\item The distribution of the test statistic
 	\end{enumerate}
-	
-	
+
+
 	For each of these distributions there is one distribution under the null and one under the alternative. The main characteristic of the distribution under the alternative is, that its expected value represents the value that is expected under the alternative hypothesis. It has the same shape as the distribution under the null (i.e., same variance), but is shifted along the x axis. Thus, these two distributions only differ with respect to their location on the x-axis.
-	
-	
+
+
 	\begin{enumerate}
-		\item The distribution of the raw values: The values of the individuals in the population are assumed to be normally distributed with $\mathcal{N}(\mu_0,\,\sigma^{2})$ under the null hypothesis and $\mathcal{N}(\mu,\,\sigma^{2})$ under the alternative. In our example, $\mathcal{N}(\mu,\,\sigma^{2})$ would be the distribution of the concentration performance values of the individuals in the population, after having received the treatment. 
-		\item The distribution of the means: We imagine that we draw samples of a given size $n$ from the population and calculate their mean. These means are supposed to be normally distributed with $\mathcal{N}(\mu_0,\,\frac{\sigma^{2}}{n})$ under the null hypothesis and $\mathcal{N}(\mu,\,\frac{\sigma^{2}}{n})$ under the alternative. In our example a value from this distribution represents the mean concentration performance in a given sample. For statistical testing, we need to determine the significance of these values, and this is what we need the test statistic for. 
+		\item The distribution of the raw values: The values of the individuals in the population are assumed to be normally distributed with $\mathcal{N}(\mu_0,\,\sigma^{2})$ under the null hypothesis and $\mathcal{N}(\mu,\,\sigma^{2})$ under the alternative. In our example, $\mathcal{N}(\mu,\,\sigma^{2})$ would be the distribution of the concentration performance values of the individuals in the population, after having received the treatment.
+		\item The distribution of the means: We imagine that we draw samples of a given size $n$ from the population and calculate their mean. These means are supposed to be normally distributed with $\mathcal{N}(\mu_0,\,\frac{\sigma^{2}}{n})$ under the null hypothesis and $\mathcal{N}(\mu,\,\frac{\sigma^{2}}{n})$ under the alternative. In our example a value from this distribution represents the mean concentration performance in a given sample. For statistical testing, we need to determine the significance of these values, and this is what we need the test statistic for.
 		\item The distribution of the test statistic: Usually, when we want to calculate areas under a normal distribution, we transform the values in a way so that their expected value is 0 and their standard deviation is 1. This standardization is achieved by substracting the mean and deviding by the standard deviation. Please recall, that the standard deviation of the sampling distribution of the mean is $\frac{\sigma}{\sqrt{n}}$ and is called the standard error. This transformation is called standardization or $z$-transformation and the resulting values are $z$-values; the test statistic of the $z$-test. For the $z$-values, we can easily look up the probabilities of every possible interval of values. Under the null hypothesis, the transformed values are standard normally distributed with $\mathcal{N}(0,\,1)$. For the alternative hypothesis, we need a distribution that has exactly the same variance, but a shifted expected value. The amount by which the ditribution is shifted is the mean difference $(\mu-\mu_0)$ standardized by the standard error $(\frac{\sigma}{\sqrt{n}})$:
-		
-		
-		\[\frac{\mu-\mu_0}{\frac{\sigma}{\sqrt{n}}} = \sqrt{n}(\frac{\mu-\mu_0}{\sigma})\] 
-		
+
+
+		\[\frac{\mu-\mu_0}{\frac{\sigma}{\sqrt{n}}} = \sqrt{n}(\frac{\mu-\mu_0}{\sigma})\]
+
 	\end{enumerate}
-	
-	
-	
-	For most statistical tests, the amount by which the distribution is shifted is called the *noncentrality parameter*, and the resulting distribution the *noncentral distribution*, that for most tests also has a different shape. This terminology is less common for the $z$-test, because here the noncentral distribution is basically the same as the one under the null except that it is shifted.  
-	
-	The expected value of the distribution of the alternative hypothesis for the $z$-test is the expected value of the standard normal distribution $(\mu_0 = 0)$ plus the noncentrality parameter. As a result, these values are normally distributed with $\mathcal{N}(\sqrt{n}(\frac{\mu-\mu_0}{\sigma}),\,1)$. 
-	
+
+
+
+	For most statistical tests, the amount by which the distribution is shifted is called the *noncentrality parameter*, and the resulting distribution the *noncentral distribution*, which for most tests also has a different shape. This terminology is less common for the $z$-test, because here the noncentral distribution is basically the same as the one under the null except that it is shifted.
+
+	The expected value of the distribution of the alternative hypothesis for the $z$-test is the expected value of the standard normal distribution $(\mu_0 = 0)$ plus the noncentrality parameter. As a result, these values are normally distributed with $\mathcal{N}(\sqrt{n}(\frac{\mu-\mu_0}{\sigma}),\,1)$.
+
 	To sum up, for the test statistic of the $z$-test, the null distribution is a standard normal distribution with $\mathcal{N}(0,\,1)$, and the alternative distribution is a noncentral $z$-distribution with $\mathcal{N}(\sqrt{n}(\frac{\mu-\mu_0}{\sigma}),\,1)$.
-	
-	In this chapter, we focus on representations of the two distributions in the standardized form (i.e., $z$-distributions). However, to get a feeling of how different factors have an impact on both, the sampling distribution of the mean and the test statistic, you can use this shiny-app: 
+
+	In this chapter, we focus on representations of the two distributions in the standardized form (i.e., $z$-distributions). However, to get a feeling of how different factors have an impact on both, the sampling distribution of the mean and the test statistic, you can use this shiny-app:
 	\stella{Sieht so aus, als gäbe es die Seite nicht mehr}
 	\url{https://psychmeth.shinyapps.io/power_z_test/}
-	
-	In the shiny-app, you can switch between the representation of distributions of the mean and of $z$-distributions with the same parameters and see how they both change when certain parameters (e.g., sample size, effect size) change. The respective influencing factors will be discussed in the next section. 
-	
+
+	In the shiny-app, you can switch between the representation of distributions of the mean and of $z$-distributions with the same parameters and see how they both change when certain parameters (e.g., sample size, effect size) change. The respective influencing factors will be discussed in the next section.
+
 	{\centering
 		\noindent\rule{10cm}{0.4pt}
-		
+
 	}
 	The x axis reflects all possible test statistics or $z$-values. One of these $z$-values is the critical $z$-value that corresponds with $\alpha$. It is depicted by the black vertical line. For all values left of the line, the test is not significant and right of the line it is significant. The region right of the line is called the critical region.
-	
+
 	Given all this information, we can now compare the depicted distributions with the above tables: The critical value indicates whether we are in the first or second row of the table. For all values left of the line, we are in the first row - the test result is non significant. And for all values right of the line, we are in the second row - the test result is significant. The two distributions stand for the two columns in the tables. If we examine the null distribution, we are in the left column, and if the alternative hypothesis is true, we are in the right column.
-	
-	Having determined the distribution under the alternative hypothesis, we can use the critical value $z_\alpha$ to cut off the areas under the curve on both sides of it. The area to the left of the critical value is the $\beta$ probability. The entire area under a probability distribution is always 1, and the area on the other side thus is $1-\beta$, the power of the test. It represents the probability to reject the null hypothesis, given that the alternative hypothesis is true (i.e., to find an effect given that it truly exists). 
-	
-	Remember, that the curve under the alternative hypothesis is not a standard normal distribution, as explained above in the box "The $z$-distribution for the alternative hypothesis". Therefore, we cannot directly look up the corresponding probabilities in the $z$-table. It is however possible to calculate the area under this distribution directly using R. Let us consider an alternative distribution with expected value $\mu$ = 2 (as exemplarily resulting from $n$ = 25 and $\delta$ = 0.4: $\mu$ = $\sqrt{25}\cdot$ 0.4 = 2). If we use a $\alpha$ level of 0.05, the critical value $z_\alpha$ for the null distribution is 1.645 (as can be looked up in the $z$-table). Thus, in order to get $\beta$ we have to calculate the cumulative area to the left of 1.645 of a normal distribution with expected value 2 and standard deviation 1:   
-	
-	<<calculate beta>>=
+
+	Having determined the distribution under the alternative hypothesis, we can use the critical value $z_\alpha$ to cut off the areas under the curve on both sides of it. The area to the left of the critical value is the $\beta$ probability. The entire area under a probability distribution is always 1, and the area on the other side thus is $1-\beta$, the power of the test. It represents the probability to reject the null hypothesis, given that the alternative hypothesis is true (i.e., to find an effect given that it truly exists).
+
+	Remember, that the curve under the alternative hypothesis is not a standard normal distribution, as explained above in the box "The $z$-distribution for the alternative hypothesis". Therefore, we cannot directly look up the corresponding probabilities in the $z$-table. It is however possible to calculate the area under this distribution directly using R. Let us consider an alternative distribution with expected value $\mu$ = 2 (as exemplarily resulting from $n$ = 25 and $\delta$ = 0.4: $\mu$ = $\sqrt{25}\cdot$ 0.4 = 2). If we use a $\alpha$ level of 0.05, the critical value $z_\alpha$ for the null distribution is 1.645 (as can be looked up in the $z$-table). Thus, in order to get $\beta$ we have to calculate the cumulative area to the left of 1.645 of a normal distribution with expected value 2 and standard deviation 1:
+
+<<calculate beta>>=
 	pnorm(q = 1.645,mean = 2,sd = 1)
-	@
-	
-	
-	The function \texttt{pnorm} calculates the cumulative probability of a value named $q$, under the specified normal distribution. In this example, $\beta$ is approximately 0.36, and therefore the power $1-\beta$ is approximately 1-0.36= 0.64.
-	
+@
+
+
+	The function \texttt{pnorm} calculates the cumulative probability of a value named $q$, under the specified normal distribution. In this example, $\beta$ is approximately 0.36, and therefore the power $1-\beta$ is approximately 1-0.36 = 0.64.
+
 	{\centering
 		\noindent\rule{10cm}{0.4pt}
-		
+
 	}
 	\subsection*{Calculating the power by means of the $z$-table}
-	
-	If we want to calculate areas under normal distributions by hand, we need the standardized normal distribution. The distribution under the null is standard normal. As can be seen in the distribution picture above, it has an expected value of 0. If we want to calculate an area under the alternative hypothesis, it first has to be shifted along the x axis because its expected value is not yet 0. This is done by substracting the expected value of the alternative $\sqrt{n} \cdot \delta$ from all values. 
+
+	If we want to calculate areas under normal distributions by hand, we need the standardized normal distribution. The distribution under the null is standard normal. As can be seen in the distribution picture above, it has an expected value of 0. If we want to calculate an area under the alternative hypothesis, it first has to be shifted along the x axis because its expected value is not yet 0. This is done by substracting the expected value of the alternative $\sqrt{n} \cdot \delta$ from all values.
 	Hence, the critical value of the alternative hypothesis $z_\beta$ is $z_\alpha$ minus the expected value of the alternative hypothesis:
 	\[
 	z_\beta = z_{1-\alpha}-\sqrt{n} \cdot \delta
 	\]
-	
-	$z_\beta$ can now directly be used as the $z$-value that we use to look up the corresponding probabilities in the $z$-table. 
-	
+
+	$z_\beta$ can now directly be used as the $z$-value that we use to look up the corresponding probabilities in the $z$-table.
+
 	If our statistical test uses a test statistic other than the $z$-value and therefore a different distribution the above formula looks a little different. But the procedure is always the same.
-	
+
 	{\centering
 		\noindent\rule{10cm}{0.4pt}
-		
+
 	}
 	\vspace{0.5cm}
-	
-	To sum up, the steps towards calculating the power are the following: 
-	
+
+	To sum up, the steps towards calculating the power are the following:
+
 	\begin{enumerate}
 		\item Set the probability $\alpha$.
 		\item Cut off $\alpha$ under the null distribution, and thereby determine the critical value (for the $z$-test: $z_\alpha$).
-		3. Choose the expected effect under the alternative hypothesis, and thereby determine the distribution of the test statistic when the alternative hypothesis is true.
+		\item  Choose the expected effect under the alternative hypothesis, and thereby determine the distribution of the test statistic when the alternative hypothesis is true.
 		\item Calculate $\beta$ as the area under the alternative distribution left of the critical value.
 		\item Calculate the power as $1-\beta$.
 	\end{enumerate}
-	
-	In the process of determining the power, $1-\beta$, a lot of decisions have to be made (e.g., determining the $\alpha$ level and the expected effect under the alternative hypothesis). The power can change dramatically depending on those decisions, which is why they should be made very carefully. The most critical point in practice often is to choose the expected effect under the alternative hypothesis. Commonly, in research only the null hypothesis is formulated as a precise value. The alternative hypothesis only specifies whether the effect goes in a  positive or negative direction (one-sided test) or both is possible (two-sided test). For power analysis, this information is not enough. In order to determine the distribution under the alternative hypothesis and thus the area under the curve, a specific value is needed. This aspect will be discussed a little more in detail later. 
-	
+
+	In the process of determining the power, $1-\beta$, a lot of decisions have to be made (e.g., determining the $\alpha$ level and the expected effect under the alternative hypothesis). The power can change dramatically depending on those decisions, which is why they should be made very carefully. The most critical point in practice often is to choose the expected effect under the alternative hypothesis. Commonly, in research only the null hypothesis is formulated as a precise value. The alternative hypothesis only specifies whether the effect goes in a  positive or negative direction (one-sided test) or both is possible (two-sided test). For power analysis, this information is not enough. In order to determine the distribution under the alternative hypothesis and thus the area under the curve, a specific value is needed. This aspect will be discussed a little more in detail later.
+
 	\section{Why power is important}
-	
-	What is high and what is low power? And what is a level of power, that we would want to achieve when doing sample size planning? 
-	The answer to theses questions is not straightforward. However, taking a look at average reported effect sizes and sample sizes in the literature, we can see, that most studies are clearly underpowered. 
-	
-	Richard, Bond, and Stokes-Zoota [-@richard03] conducted a meta-meta-analysis of more than 25.000 studies and found an average effect size of correlations of $\rho = .21$ (sd = .15). Bosco and colleagues [-@bosco15] examined 147.328 correlations from the Journal of Applied Psychology and Personnel Psychology and found an average correlation of $\rho = .22$ (sd = .20). 
-	According to effect size classifications by Cohen [-@cohen88], these are average sized correlations. However, a typical sample size in this sort of studies is $n$= 40. Taking $\rho$ = .21 as effect size, this leads to a power of <34\%. This means, if the effect is really present in reality, it is only detected with a probability of 34\%. In other words, on average twice as many of those studies will not find a significant effect, even though it is there. 
-	
+
+	What is high and what is low power? And what is a level of power that we would want to achieve when doing sample size planning?
+	The answer to theses questions is not straightforward. However, taking a look at average reported effect sizes and sample sizes in the literature, we can see, that most studies are clearly underpowered.
+
+	Richard, Bond, and Stokes-Zoota [-@richard03] conducted a meta-meta-analysis of more than 25.000 studies and found an average effect size of correlations of $\rho = .21$ (sd = .15). Bosco and colleagues [-@bosco15] examined 147.328 correlations from the Journal of Applied Psychology and Personnel Psychology and found an average correlation of $\rho = .22$ (sd = .20).
+	According to effect size classifications by Cohen [-@cohen88], these are average sized correlations. However, a typical sample size in this sort of studies is $n$ = 40. Taking $\rho$ = .21 as effect size, this leads to a power of <34\%. This means, if the effect is really present in reality, it is only detected with a probability of 34\%. In other words, on average twice as many of those studies will not find a significant effect, even though it is there.
+
 	If a study has such low power, it means, that if no effect is detected, we do not know what the reason might be. It could be, that there really is no effect in the population, but it could also be, that the sample size was just too small to be detected.
-	
-	Even less intuitive, it is also true the other way around: If we do get a significant effect with an underpowered study, it is less likely to represent a true effect. The reason for this is the positive predictive value [PPV; see @nuzzo14; @colquhoun14]. 
-	Imagine we perform 1000 tests, and 30\% of all investigated effects are real. Then, 300 out of our 1000 tests have a real effect. If the power in these studies is 35\%, 0.35 $\cdot$ 300 = 105 effects are detected. Those are the true positives. 700 of our 1000 tests, however, do not have a real effect. If we use an $\alpha$ probability of 5\%, then we will still detect an effect in 5\% of those studies. This means in 0.05 $\cdot$ 700 = 35 studies we get a significant test result, even though there is no effect. These are the false positives. The PPV is the percentage of true effects out of all significant effects. In our example, this is 105/(105+35) = 75\%. Thus, if we find an effect, the probability is 75\%, that it is really there. 
-	
-	The PPV, of course, is highly dependent on the a priori assumed probability of a real effect, that we set to 30\% in this example. The higher the a priori probability of an effect, the higher the PPV. 
-	
-	If, on the other hand, the power for the same example was not 35\% but 90\%, we would get a different result for the PPV. Then, 0.90 $\cdot$ 300 = 270 effects are detected (true positives). Yet, in 35 studies we would still get a false positive. The PPV then is 270/(270+35) =  88.52\%. Hence, if we find a significant test result, the probability is 88.52\% that it is really there. 
-	
-	The lower the power for a given percentage of real effects and a given $\alpha$, the lower the PPV. This means, if an underpowered study yields a significant test result, the probability is low that there really is an effect. 
-	
-	In sum, studies with low power provide little information. In the very likely event of a non significant outcome, it can be that we did not find the effect because of the small sample size or because it does not exist. If the test is significant, chances are rather high, that it was a false discovery, especially when the baseline probability of an effect was low and $\alpha$ was rather high (e.g., 5\% instead of 1\%), which would result in a smaller PPV. This lack of information of underpowered studies does not only mean a waste of time for the researchers, but also possibly a waste of money and resources that were used for the study, such as animals' lives or third party funding. 
-	
-	Low power due to small sample size causes even more problems: 
-	
+
+	Even less intuitive, it is also true the other way around: If we do get a significant effect with an underpowered study, it is less likely to represent a true effect. The reason for this is the positive predictive value [PPV; see @nuzzo14; @colquhoun14].
+	Imagine we perform 1000 tests, and 30\% of all investigated effects are real. Then, 300 out of our 1000 tests have a real effect. If the power in these studies is 35\%, 0.35 $\cdot$ 300 = 105 effects are detected. Those are the true positives. 700 of our 1000 tests, however, do not have a real effect. If we use an $\alpha$ probability of 5\%, then we will still detect an effect in 5\% of those studies. This means in 0.05 $\cdot$ 700 = 35 studies we get a significant test result, even though there is no effect. These are the false positives. The PPV is the percentage of true effects out of all significant effects. In our example, this is 105/(105+35) = 75\%. Thus, if we find an effect, the probability is 75\%, that it is really there.
+
+	The PPV, of course, is highly dependent on the a priori assumed probability of a real effect, which we set to 30\% in this example. The higher the a priori probability of an effect, the higher the PPV.
+
+	If, on the other hand, the power for the same example was not 35\% but 90\%, we would get a different result for the PPV. Then, 0.90 $\cdot$ 300 = 270 effects are detected (true positives). Yet, in 35 studies we would still get a false positive. The PPV then is 270/(270+35) =  88.52\%. Hence, if we find a significant test result, the probability is 88.52\% that it is really there.
+
+	The lower the power for a given percentage of real effects and a given $\alpha$, the lower the PPV. This means, if an underpowered study yields a significant test result, the probability is low that there really is an effect.
+
+	In sum, studies with low power provide little information. In the very likely event of a non significant outcome, it can be that we did not find the effect because of the small sample size or because it does not exist. If the test is significant, chances are rather high, that it was a false discovery, especially when the baseline probability of an effect was low and $\alpha$ was rather high (e.g., 5\% instead of 1\%), which would result in a smaller PPV. This lack of information of underpowered studies does not only mean a waste of time for the researchers, but also possibly a waste of money and resources that were used for the study, such as animals' lives or third party funding.
+
+	Low power due to small sample size causes even more problems:
+
 	First of all, we get less accurate estimates, because the standard error of estimation increases with decreasing sample size. This means, variability of the estimates is higher, so, if we took a different random sample from the population, it might result in a completely different estimate.
-	
-	Another problem is caused by the fact, that commonly only statistically significant results get published. Significant results, however, are less likely in underpowered studies even if there is an effect. If the researchers still want to publish the result of such a study, they need to find a way to nevertheless get a significant result. This may lead to questionable research practices, such as p-hacking because of the pressure to publish significant results. P-hacking describes the practice of exhaustively searching for significant results in the data, which leads to inflation of false positive results. The more additional hypothesis tests are added to an analysis, the higher the probability $\alpha$ gets. This, in turn, changes the calculation from above where increasing $\alpha$ means  increasing the percentage of false positives out of all positive (significant) results. Thus, the percentage of true positives out of all positives, which is the PPV, decreases. 
-	
-	In the following, we will discuss what factors have an influence on the power. Some of them are theoretical decisions that have to be set by the researcher (as for example the $\alpha$ level and the expected effect under the alternative hypothesis). And some are characteristics of the study design, that can if ever only be controlled before data collection.
-	
+
+	Another problem is caused by the fact, that commonly only statistically significant results get published. Significant results, however, are less likely in underpowered studies even if there is an effect. If the researchers still want to publish the result of such a study, they need to find a way to nevertheless get a significant result. This may lead to questionable research practices, such as p-hacking because of the pressure to publish significant results. P-hacking describes the practice of exhaustively searching for significant results in the data, which leads to inflation of false positive results. The more additional hypothesis tests are added to an analysis, the higher the probability $\alpha$ gets. This, in turn, changes the calculation from above where increasing $\alpha$ means  increasing the percentage of false positives out of all positive (significant) results. Thus, the percentage of true positives out of all positives, which is the PPV, decreases.
+
+	In the following, we will discuss what factors have an influence on the power and which of those can be used to increase the power of the study.
+
 	\section{What does the power depend on?}
 	\stella{Vielleicht sind diese Fragezeichen-Überschriften etwas zu Lehrbuch-mässig. Wir könnten hier auch sowas wie "determinants of power" oder "Factors that influence power" schreiben, je nachdem, wie leicht verständlich wir es halten wollen}
-	
-	
+
+Some influence factors are theoretical decisions, which have to be set by the researcher (as for example the $\alpha$ level and the expected effect under the alternative hypothesis) and should not be used to increase the power of a study. Some aspects however are characteristics of the study design, which can be used to increase power but have to be controlled before data collection.
+
+
 	\subsection{Influencing factors that are theoretical decisions}
-	
-	First, we will take a look at determinants of the power, that the researcher decides on independent of the study design and data collection. Those are:
-	
+
+First, we will take a look at determinants of the power that the researcher decides on independent of power considerations. Those are:
+
+
 	\begin{enumerate}
 		\item $\alpha$ level
 		\item One-sided vs. two-sided test
 		\item Expected effect size under the alternative hypothesis
 	\end{enumerate}
-	
+
 	\subsubsection{Power and alpha level}
-	
-	Changing the $\alpha$ level essentially means changing the critical value. Taking a look at Figure \ref{fig:pwralpha}, we see that when $\alpha$ increases, the critical value in this graph is shifted to the left and $1-\beta$ also increases. 
+
+	Changing the $\alpha$ level essentially means changing the critical value. Taking a look at Figure \ref{fig:pwralpha}, we see that when $\alpha$ increases, the critical value in this graph is shifted to the left and $1-\beta$ also increases.
 	\begin{figure}[ht]
 		\centering
-		\includegraphics[width = 0.8\textwidth]{plots/power_alpha.png}
+		\includegraphics[width = 0.9\textwidth]{plots/power_alpha.png}
 		\caption{How the power ($1-\beta$) changes depending on $\alpha$}
 		\label{fig:pwralpha}
 	\end{figure}
-	From a theoretical perspective, increasing $\alpha$ means that we are less strict in our decision, because we allow the propability of a false positive to be higher. By shifting the critical value to the left, we increase the overall chance of rejeting the null hypothesis. Consequently, the propability of rejecting the null hypothesis given that it is true, also increases. Therefore, increasing $\alpha$ results in an increase of $1-\beta$. 
-	
-	
-	
-	
+	From a theoretical perspective, increasing $\alpha$ means that we are less strict in our decision, because we allow the probability of a false positive to be higher. By shifting the critical value to the left, we increase the overall chance of rejecting the null hypothesis. Consequently, the probability of rejecting the null hypothesis given that it is true, also increases. Therefore, increasing $\alpha$ results in an increase of $1-\beta$.
+
 	Note, however, that in practice it would not be legitimate to increase $\alpha$ just to increase the power because we want the probability of false positives to stay at a predefined low level.
-	
+
 	\subsubsection{Power and one-sided vs. two-sided tests}
-	
-	What happens when we choose between a one-sided or two-sided test can be seen in Figure \ref{fig:pwrtailed}. 
-	
+
+	What happens when we choose between a one-sided or two-sided test can be seen in Figure \ref{fig:pwrtailed}.
+
 	\begin{figure}[ht]
 		\centering
-		\includegraphics[width = 0.8\textwidth]{plots/onetailed.png}
-		\includegraphics[width = 0.8\textwidth]{plots/twotailed.png}
+		\includegraphics[width = 0.9\textwidth]{plots/onetailed.png}
+		\includegraphics[width = 0.9\textwidth]{plots/twotailed.png}
 		\caption{How the power ($1-\beta$) changes for two-sided vs. one-sided tests}
 		\label{fig:pwrtailed}
 	\end{figure}
-	
-	In case of a one-sided test, we just cut off $\alpha$ on one side of the null distribution, and compare the resulting critical value with the empirical value. There is only one expected value of the alternative hypothesis on one side of the null hypothesis. In case of a two-sided test, we divide the critical region in two parts - one covering $\alpha/2$ on the upper end of the distribution, the other covering $\alpha/2$ on the lower end of the distribution. For power calculation, we have to fix a certain alternative that can be either left or right of the null. The critical region, however, is still on both sides of the null hypothesis, which means that we have to add up two areas under the alternative to obtain the power:  The first area is the one that can be seen in the picture that is labeled with $1-\beta$. The second one is a very small area under the alternative on the left of the lower critical value, that cannot be seen in the picture. It can be shown mathematically, that the one-sided test is the so called "uniformly most powerful" test for any null hypothesis. This implies, that a two-sided test always has less power than a one-sided test. One reason is, that for larger effects, as in the picture, the area on the left of the null distribution is negligible, and the shift from $\alpha$ to $\alpha/2$ has the simple consequence, that the critical value moves away from the null just like when we decrease the overall $\alpha$ level. Hence, switching from one-sided to two-sided testing means decreasing $\alpha$ on one side, and therefore decreasing $1-\beta$, the power. 
-	
-	It is advisable in practice to state a one-sided alternative, and to use a one-sided test whenever the hypothesis specifies the direction of the effect. 
-	
+
+	In case of a one-sided test, we just cut off $\alpha$ on one side of the null distribution, and compare the resulting critical value with the empirical value. There is only one expected value of the alternative hypothesis on one side of the null hypothesis. In case of a two-sided test, we divide the critical region in two parts - one covering $\alpha/2$ on the upper end of the distribution, the other covering $\alpha/2$ on the lower end of the distribution. For power calculation, we have to fix a certain alternative, which can be either left or right of the null. The critical region, however, is still on both sides of the null hypothesis, which means that we have to add up two areas under the alternative to obtain the power:  The first area is the one that can be seen in the picture that is labeled with $1-\beta$. The second one is a very small area under the alternative on the left of the lower critical value, which cannot be seen in the picture. It can be shown mathematically, that the one-sided test is the so called "uniformly most powerful" test for any null hypothesis. This implies, that a two-sided test always has less power than a one-sided test. One reason is, that for larger effects, as in the picture, the area on the left of the null distribution is negligible, and the shift from $\alpha$ to $\alpha/2$ has the simple consequence, that the critical value moves away from the null just like when we decrease the overall $\alpha$ level. Hence, switching from one-sided to two-sided testing means decreasing $\alpha$ on one side, and therefore decreasing $1-\beta$, the power.
+
+	It is advisable in practice to state a one-sided alternative, and to use a one-sided test whenever the hypothesis specifies the direction of the effect.
+
 	\subsubsection{Power and effect size}
-	
-	To understand what happens when the expected effect size under the alternative hypothesis increases, let us take look at the distribution plot in Figure \ref{fig:pwreffect}.
+
+	To understand what happens when the expected effect size under the alternative hypothesis increases, let us take a look at the distribution plot in Figure \ref{fig:pwreffect}.
 	\begin{figure}[ht]
 		\centering
-		\includegraphics[width = 0.8\textwidth]{plots/power_effectsize.png}
+		\includegraphics[width = 0.9\textwidth]{plots/power_effectsize.png}
 		\caption{How the power ($1-\beta$) changes depending on the effect size}
 		\label{fig:pwreffect}
 	\end{figure}
-	With an increasing effect size, the alternative distribution moves further away from the null distribution, because the difference in their expected values increases. Since $\alpha$ and the critical value stay the same, this leads to a decrease in $\beta$ and an increase in $1-\beta$. This makes sense from a theoretical point of view, because a larger effect is more likely to be detected. In terms of distributions, when the alternative distribution moves away from the null distribution it is less likely that we get an effect that is zero or close to zero if the alternative hypothesis is true. 
-	
+	With an increasing effect size, the alternative distribution moves further away from the null distribution, because the difference in their expected values increases. Since $\alpha$ and the critical value stay the same, this leads to a decrease in $\beta$ and an increase in $1-\beta$. This makes sense from a theoretical point of view, because a larger effect is more likely to be detected. In terms of distributions, when the alternative distribution moves away from the null distribution it is less likely that we get an effect that is zero or close to zero if the alternative hypothesis is true.
+
 	The consideration of which effect size to expect is in practice rather difficult which will be discussed more in detail in section 5.1.
-	
+
+
 	\subsection{Influencing factors that are dependent on the study design}
-	
-	Furthermore, there are a number of influences on power, that are already determined by the design of the study. Considering them carefully before conducting the study, they can help improve the power without having to change parameters that are supposed to be theoretical decisions. 
-	To understand these influencing factors, we are going to examine another element of the equation for the power calculation: The standard error $\frac{\sigma}{\sqrt{n}}$. It consists of two elements: The standard deviation of the target measure $\sigma$ and the sample size $n$. What the target measure exactly is, depends on the statistical test used. In case of the $z$-test, $\sigma$ is the standard deviation of the raw values. In case of the $t$-test for independent samples, for example, $\sigma$ is the standard deviation of the mean differences. According to the equation, the power increases with decreasing $\sigma$ and with increasing sample size $n$. 
-	
-	
-	Resulting from the standard error being part of the equation, there are three factors that have an influence on the power of a test. As such, they have to be considered when designing the study: 
-	
+
+	Furthermore, there are a number of influences on power that are determined by the design of the study. Considering them carefully before conducting the study, they can help improve the power.
+	To understand these influencing factors, we are going to examine another element of the equation for the power calculation: The standard error $\frac{\sigma}{\sqrt{n}}$. It consists of two elements: The standard deviation of the target measure $\sigma$ and the sample size $n$. What the target measure exactly is, depends on the statistical test used. In case of the $z$-test, $\sigma$ is the standard deviation of the raw values. In case of the $t$-test for independent samples, for example, $\sigma$ is the standard deviation of the mean differences. According to the equation, the power increases with decreasing $\sigma$ and with increasing sample size $n$.
+
+
+	Resulting from the standard error being part of the equation, there are three factors that have an influence on the power of a test. As such, they have to be considered when designing the study:
+
 	\begin{enumerate}
 		\item The sample size $n$
-		\item The standard deviation $\sigma$ of the target measure 
+		\item The standard deviation $\sigma$ of the target measure
 		\item Within subjects designs vs. between subjects designs
 	\end{enumerate}
-	
-	Unlike the standard deviation $\sigma$, the sample size $n$ is something that can be manipulated by the researcher directly. 
+
+The sample size $n$ can be manipulated by the researcher in the most direct way.
 	We will now take a closer look at its influence. With $n$ being a factor of the test statistic, the distribution of the alternative moves further away from the null distribution, when the sample size increases. The consequence of this happening can be seen in Figure \ref{fig:pwrn}.
-	
+
 	\subsubsection{Power and sample size}
-	
-	In Figure , $n$= 12 and in the below graph $n$= 20. 
+
+	In Figure , $n$ = 12 and in the below graph $n$ = 20.
 	\begin{figure}[ht]
 		\centering
-		%  \includegraphics[width = 0.8\textwidth]{plots/effectOfSampleSizeI.png}
-		% \includegraphics[width = 0.8\textwidth]{plots/effectOfSampleSizeII.png}
+		  \includegraphics[width = 0.9\textwidth]{plots/effectOfSampleSizeI.png}
+		 \includegraphics[width = 0.9\textwidth]{plots/effectOfSampleSizeII.png}
 		\caption{How the power ($1-\beta$) changes depending on the sample size}
 		\label{fig:pwrn}
 	\end{figure}
-	When $n$ increases, the curves move further away from each other. In turn, the overlap between both areas under the curves gets smaller. This means, that $\beta$ gets smaller and therefore $1-\beta$ increases.  This makes sense because results get significant more easily, when sample sizes are larger. Therefore, effects that are present are more likely to be detected. This means, the power increases with increasing sample size. 
-	
-	\subsubsection{Power and standard deviation}
-	
-	
-	As already mentioned, the standard deviation $\delta$ usually is not as easy to manipulate. However, there are factors that can increase the standard deviation of the measure unnecessarily, such as measurement error, which the researcher can try to avoid as much as possible. Measurement error for example results from unreliable measuring instruments.
-	
-	\subsubsection{Power and within vs. between subjects design}
-	
-	A factor that might not be so obvious is the difference of between and within subjects designs (the latter also known as paired samples). This means whether the variable of interest is varied between persons, as exemplarily in the $t$-test for independent samples, or within one person, as for example in the $t$-test for paired samples. In many scenarios, a within subjects design is simply not possible due to practical reasons. If as an example we take the target measure reaction time in an IQ test, it is difficult to measure one person more than once and avoiding a habituation effect that automatically leads to lower reaction times at later time points. However, wherever possible, within subject designs have one particular statistical advantage: The unexplained/error variance gets smaller, because the part of the variance that is due to initial differences between persons is removed. Hence, within subjects designs have higher power than between subjects designs. To be more precise, for the $t$-test for dependent samples, compared with a $t$-test for independent samples, the power increases with increasing correlation between the dependent variables at both time points. In within subjects designs, the standard deviation $\sigma$, that we use for power calculation, is the standard deviation of the differences between measurements of one person. $\sigma$ decreases with increasing correlation between the two measures and thus the power increases with increasing correlation between the measures. The exact relation between power and correlation of the measures has been shown by May and Hittner [-@may12]. For a scenario of Cohen's d = 0.5, $\alpha$ = .05, one-tailed test, n1 = n2 = 16 for the independent $t$-test and n=16 for the dependent $t$-test, where the power of the independent test is 0.4, they could show that the power of the dependent test exceeds the power of the independent test already for a correlation of .1 and then constantly increases for an increasing correlation between the two measures up to almost 1 for a correlation of 0.9. 
-	
-	Last but not least, parametric tests have higher power than non-parametric tests, as long as their assumptions are met. The reason is that parametric tests use additional information, namely information regarding the distribution that the data are assumed to have come from. 
-	
-	\section{Determining the required sample size n}
-	
-	Instead of computing the achieved power after having carried out a study, it is usually recommendable to calculate the sample size needed for a specific power beforehand. This avoids studies with little to no information gain and the potential costs of too large samples.
-	Using the simple example of the $z$-test and the corresponding formula for calculating the power, $z_\beta = z_\alpha-\sqrt{n}\frac{\mu-\mu_0}{\sigma}$, we can see, that each of the four parameters $\alpha, \beta, n$, and $\delta$ can be calculated given the other three. Thus, for a $z$-test with given $\alpha, 1-\beta$, and $\delta$, we can calculate the sample size needed, by simply solving the equation for $n$ which results in:
-	
-	\[ n = \left(\frac{z_{1-\alpha}-z_{\beta}}{\delta}\right)^2 \]
-	
-	$z_{1-0.05}$ and $z_{0.2}$ can be determined by looking up the quantiles in the $z$-table or by using the \texttt{qnorm()} command in R. 
-	
-	
-	\stella{Hier noch mal schauen, ob wir die qnorm() Funktion weiter oben (Ende von Kapitel 1, wo auch pnorm erkärt ist) erklären sollen, oder sonst evtl. hier etwas ausführlicher. Vielleicht wird das aber sonst auch zu viel und man kann das hier auch einfach nur erwähnen}
-	
-	If, for example, we want to calculate the sample size required for a one sample $z$-test with expected effect size $\delta$ = 0.3, power = 80\%, and $\alpha =$ 5\% in a one-sided test, assuming greater values under the alternative, we get
-	
-	\[ n = \left(\frac{1.645-(-0.842)}{0.3}\right)^2 = 8.29^2 = 68.72\]
-	
-	which means, we need a sample size of $n$ = 69 to find the effect of $\delta$ = 0.3 with a probability of 80\%. 
-	
-	In a similar way, required sample sizes can be computed for other parametric and exact tests, for example $z$-test for correlations, $z$-tests and $t$-tests for mean comparisons, F-tests for analyses of variance and regression models, and $t$-tests for regression coefficients. 
-	
-	Calculations can be done with statistical software, such as G*Power, that can be downloaded for free from \url{http://www.gpower.hhu.de}, or in R with the package \texttt{pwr}, that we will use in our practical examples in the following chapters.
-	
-	However, for the calculation of power and therefore also for the sample size calculation, we always need the distribution of the test statistic under the alternative hypothesis. Unfortunately, there are statistical tests for which this distribution cannot be determined that easily. In such scenarios, a different procedure has to be used.
-	
-	One approach is to determine the influence of $n$ on the standard error of the effect estimator. Maximum likelihood estimators are asymptotically normally distributed, and thus we can use a $z$-test with a test statistic of the form $\frac{\textrm{effect size}}{\textrm{standard error}}$.
-	
-	The more common approach in more complex scenarios though, is to use simulation studies to determine the power of different sizes of $n$. This means that many different samples are randomly created for each size of $n$. They all have the same true effect size, that, of course, still has to be set by the researcher. Then, the statistical test of interest is run on each of them, and the number of significant test results is counted. The proportion of significant test results of the total number of samples is the power. 
-	
-	Let us use the $z$-test from above as an example. For illustration purposes, we start with an arbitrarily chosen sample size of $n$=25 and generate 25 random normally distributed numbers (e.g. using **rnorm**) with mean = 0.3 and sd = 1. For this sample, we then calculate a confidence interval with lower bound $\hat{x}_i - 1.645 \cdot se(\hat{x}_i)$. We can repeat this procedure let's say 5000 times (N = 5000) and check how many of the lower bounds of the confidence intervals are above 0 (meaning that the test is significant). The percentage of significant test results is an estimate of the power. Using the R code below with the given seed, we get an estimated power of 0.45.
-	
-We start by setting the parameters for the simulation, where N is the number of repetitions. Then, we generate N repetitions and calculate the lower bound of the confindence interval (CI). With that, we can calculate the rate of significant results
-	<<simulation1>>=
+	When $n$ increases, the curves move further away from each other. In turn, the overlap between both areas under the curves gets smaller. This means, that $\beta$ gets smaller and therefore $1-\beta$ increases.  This makes sense because results get significant more easily, when sample sizes are larger. Therefore, effects that are present are more likely to be detected. This means, the power increases with increasing sample size.
 
-	N = 5000 
+	\subsubsection{Power and standard deviation}
+
+
+	The standard deviation $\sigma$ usually is not as easy to manipulate. However, there are factors that can increase the standard deviation of the measure unnecessarily, such as measurement error, which the researcher can try to avoid as much as possible. Measurement error for example results from unreliable measuring instruments.
+
+	\subsubsection{Power and within vs. between subjects design}
+
+	A factor that might not be so obvious is the difference of between and within subjects designs (the latter also known as paired samples). This means whether the variable of interest is varied between persons, as exemplarily in the $t$-test for independent samples, or within one person, as for example in the $t$-test for paired samples. In many scenarios, a within subjects design is simply not possible due to practical reasons. If as an example we take the target measure reaction time in an IQ test, it is difficult to measure one person more than once and avoiding a habituation effect that automatically leads to lower reaction times at later time points. However, wherever possible, within subject designs have one particular statistical advantage: The unexplained/error variance gets smaller, because the part of the variance that is due to initial differences between persons is removed. Hence, within subjects designs have higher power than between subjects designs. To be more precise, for the $t$-test for dependent samples, compared with a $t$-test for independent samples, the power increases with increasing correlation between the dependent variables at both time points. In within subjects designs, the standard deviation $\sigma$ that we use for power calculation, is the standard deviation of the differences between measurements of one person. $\sigma$ decreases with increasing correlation between the two measures and thus the power increases with increasing correlation between the measures. The exact relation between power and correlation of the measures has been shown by May and Hittner [-@may12]. For a scenario of Cohen's d = 0.5, $\alpha$ = .05, one-tailed test, n1 = n2 = 16 for the independent $t$-test and n = 16 for the dependent $t$-test, where the power of the independent test is 0.4, they could show that the power of the dependent test exceeds the power of the independent test already for a correlation of .1 and then constantly increases for an increasing correlation between the two measures up to almost 1 for a correlation of 0.9.
+
+	Last but not least, parametric tests have higher power than non-parametric tests, as long as their assumptions are met. The reason is that parametric tests use additional information, namely information regarding the distribution that the data are assumed to have come from.
+
+	\section{Determining the required sample size n}
+
+	Instead of computing the achieved power after having carried out a study, it is usually recommendable to calculate the sample size needed for a specific power beforehand. This avoids studies with little to no information gain and the potential costs of too large samples.
+
+	\subsection{Analytical approach}
+
+	Using the simple example of the $z$-test and the corresponding formula for calculating the power, $z_\beta = z_\alpha-\sqrt{n}\frac{\mu-\mu_0}{\sigma}$, we can see, that each of the four parameters $\alpha, \beta, n$, and $\delta$ can be calculated given the other three. Thus, for a $z$-test with given $\alpha, 1-\beta$, and $\delta$, we can calculate the sample size needed, by simply solving the equation for $n$ which results in:
+
+	\[ n = \left(\frac{z_{1-\alpha}-z_{\beta}}{\delta}\right)^2 \]
+
+	$z_{1-0.05}$ and $z_{0.2}$ can be determined by looking up the quantiles in the $z$-table or by using the \texttt{qnorm()} command in R.
+
+
+	\stella{Hier noch mal schauen, ob wir die qnorm() Funktion weiter oben (Ende von Kapitel 1, wo auch pnorm erkärt ist) erklären sollen, oder sonst evtl. hier etwas ausführlicher. Vielleicht wird das aber sonst auch zu viel und man kann das hier auch einfach nur erwähnen}
+
+	If, for example, we want to calculate the sample size required for a one sample $z$-test with expected effect size $\delta$ = 0.3, power = 80\%, and $\alpha = $ 5\% in a one-sided test, assuming greater values under the alternative, we get
+
+	\[ n = \left(\frac{1.645-(-0.842)}{0.3}\right)^2 = 8.29^2 = 68.72\]
+
+	which means, we need a sample size of $n$ = 69 to find the effect of $\delta$ = 0.3 with a probability of 80\%.
+
+	In a similar way, required sample sizes can be computed for other parametric and exact tests, for example $z$-test for correlations, $z$-tests and $t$-tests for mean comparisons, F-tests for analyses of variance and regression models, and $t$-tests or $z$-tests for regression coefficients.
+
+	Calculations can be done with statistical software, such as G*Power, which can be downloaded for free from \url{http://www.gpower.hhu.de}, or in R with the package \texttt{pwr}, which we will use in our practical examples in the following chapters.
+
+For any power analysis or sample size calculation, no matter for which statistical method, one always needs one important detail: The expected value under the alternative hypothesis. For the $z$-test, we have calculated the expected value $\mu$ from the effect size $\delta$. For other statistical procedures, we use other effect sizes measures that are transformed into the respective expected value of the distribution under the alternative hypothesis.
+However, there are unfortunately statistical tests for which this transformation cannot be done that easily. In such scenarios, a different procedure has to be used.
+
+	One approach is to determine the influence of $n$ on the standard error of the effect estimator. Maximum likelihood estimators are asymptotically normally distributed, and thus we can use a $z$-test with a test statistic of the form $\frac{\textrm{effect size}}{\textrm{standard error}}$, the so-called Wald-test.
+	\stella{Kann man das noch ein analytisches Verfahren nennen? Oder sollen wir da vielleicht unterscheiden: a) analytische Verfahren über die Verteilung der Alternativhypothese, b) Einfluss von n auf den Standardfehler im Wald-Test, c) Simulationsverfahren. Ausserdem: Sollen wir den Begriff Wald-Test noch genauer erklären?}
+
+	The other approach in more complex scenarios is to use simulation studies to determine the power of different sizes of $n$. This means that many different samples are randomly created for each size of $n$. They all have the same true effect size, which, of course, still has to be set by the researcher. Then, the statistical test of interest is run on each of them, and the number of significant test results is counted. The proportion of significant test results of the total number of samples is the power.
+
+\subsection{Simulation approach}
+
+	Let us use the $z$-test from above as an example. For illustration purposes, we start with an arbitrarily chosen sample size of $n$ = 25 and generate 25 random normally distributed numbers (e.g. using \texttt{rnorm}) with mean = 0.3 and sd = 1. For this sample, we then calculate a confidence interval with lower bound $\hat{x}_i - 1.645 \cdot se(\hat{x}_i)$. We can repeat this procedure let's say 5000 times (N = 5000) and check how many of the lower bounds of the confidence intervals are above 0 (meaning that the test is significant). The percentage of significant test results is an estimate of the power. Using the R code below with the given seed, we get an estimated power of 0.45.
+
+We start by setting the parameters for the simulation, where N is the number of repetitions. Then, we generate N repetitions and calculate the lower bound of the confidence interval (CI). With that, we can calculate the rate of significant results
+<<simulation1>>=
+
+	N = 5000
 	d = 0.3
 	n = 25
 
@@ -371,7 +400,7 @@ We start by setting the parameters for the simulation, where N is the number of 
 	x <- NULL
 	m <-1
 	while(m <= N){
-		x <- cbind(x, rnorm(mean=d,sd=1,n))
+		x <- cbind(x, rnorm(mean = d,sd = 1,n))
 		m = m +1
 	}
 
@@ -382,127 +411,127 @@ We start by setting the parameters for the simulation, where N is the number of 
 
 	sum(ll > 0)/N
 @
-	
+
 	We can repeat this procedure for different sample sizes and create a power plot.
-	
-	<<simulation1rep>>=
+
+<<simulation1rep>>=
 	n <- c(10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70)
 	ll <- list()
-	
+
 	for (j in 1:length(n)){
-		
+
 		set.seed(1234)
 		x <- NULL
 		m <-1
 		while(m <= N){
-			x <- cbind(x, rnorm(mean=d,sd=1,n[j]))
+			x <- cbind(x, rnorm(mean = d,sd = 1,n[j]))
 			m = m +1
 		}
-		
+
 		ll[[j]] <- rep(NA,N)
 		for(i in 1:N){
-			ll[[j]][i] <- mean(x[,i]) - 1.645 * (sd(x[,i])/sqrt(n[j]))
+			ll[[j]][i] <- mean(x[,i]) -
+			  1.645 * (sd(x[,i])/sqrt(n[j]))
 		}
 	}
-	
+
 	Power <- unlist(lapply(ll, function(x) sum(x>0)/N))
-	
-	
-	plot(Power ~ n, ylim=c(0, 1), type = "b")
-	
-	@ 
-	\stella{für mich: Evtl. hier noch eine Strich bei Power=0.8 einfügen, oder für alle Punkte eine Beschriftung, so dass man besser sieht, dass für n=70 Power über 80\% ist}
-	
-	We can see that for a power of 80\%, we need a little less than $n$=70, which comes fairly close to the analytically calculated required sample size of $n$ = 69 from above.
-	
+
+
+	plot(Power ~ n, ylim = c(0, 1), type = "b")
+
+@
+	\stella{für mich: Evtl. hier noch eine Strich bei Power = 0.8 einfügen, oder für alle Punkte eine Beschriftung, so dass man besser sieht, dass für n = 70 Power über 80\% ist}
+
+	We can see that for a power of 80\%, we need a little less than $n$ = 70, which comes fairly close to the analytically calculated required sample size of $n$ = 69 from above.
+
 	Sometimes, in more complex models, there are different effect sizes of interest. In this case, one option is to determine the power for the smallest expected effect size. This results in the highest required $n$. The other option is to determine the power for one pre-defined main target effect.
-	
-	The advantage of simulation studies for power calculations is, that it can be done for any type of analysis. Even a combination of questions can be examined as, for example, the power for jointly testing all effects derived from a certain theory. Additionally, it is possible to analyze the influence of other factors, such as violations of the assumption of normality. 
-	
+
+	The advantage of simulation studies for power calculations is, that it can be done for any type of analysis. Even a combination of questions can be examined as, for example, the power for jointly testing all effects derived from a certain theory. Additionally, it is possible to analyze the influence of other factors, such as violations of the assumption of normality.
+
 	The problem, however, of the simulation approach for more complex models, such as multilevel models, is, that everything that might have an influence (e.g., all parameters of the model) has to be pre-specified, which can involve a lot of decisions that are usually difficult to make.
 	Another disadvantage of the simulation approach is that it can get very time-consuming and computationally expensive. Depending on the complexity of the model, a lot of repetitions might be needed to accurately estimate the power.
-	
+
 	\stella{RUDI: Eventuell hier schon die allgemeine Erklärung des machine learning Ansatzes einfügen? Dann müsste die Erklärung eher allgemein gehalten werden, da wir hier noch keine komplexen Beispiele haben und dann später bei den Anwendungen praktischer beschreiben. Alternativ kann man sie auch erst weiter unten z.B. bei IRT zum ersten Mal erklären.}
-	
+
 	In the following chapters, we will introduce the most common procedures of effect size calculations for some selected models that are frequently used in psychological research. For the analytical procedures, we will focus on the R package \texttt{pwr} and for some cases the statistical software G*Power for an illustration. Other possible R packages for analytical and/or simulation techniques will be mentioned without going further into detail.
-	
-	Before going into detail on the specific procedures, we will shortly explain the R package \texttt{pwr}. 
-	
+
+	Before going into detail on the specific procedures, we will shortly explain the R package \texttt{pwr}.
+
 	\subsubsection{The R package \texttt{pwr}}
-	
+
 	Before the first usage, the package has to be installed with the usual command:
-	
-<<install package>>=
+
+<<install package, message = FALSE>>=
 	install.packages("pwr", repos = "http://cran.wu.ac.at")
 @
-	
+
 	Then, each time before using it, it has to be loaded into R by:
-	
+
 <<load package>>=
 	library("pwr")
 @
 	\stella{Hier aufpassen, dass die Beispiele durch den Text wirklich alle zusammen passen}
-	
+
 	The package consists of different commands for different statistical tests. For a one sample $z$-test based on the normal distribution, for example, the command is \texttt{pwr.norm.test}.
-	Let us consider the example from the $z$-test above with $\delta$=0.3, $\alpha$=0.05 and $1-\beta$=0.8. 
-	
+	Let us consider the example from the $z$-test above with $\delta$ = 0.3, $\alpha$ = 0.05 and $1-\beta$ = 0.8.
+
 	Then, we specify the following command:
-	
+
 <<power norm>>=
-	pwr.norm.test(d = 0.3, n = NULL, sig.level = 0.05, power = 0.8, alternative = "greater")
+	pwr.norm.test(d = 0.3, n = NULL, sig.level = 0.05,
+	              power = 0.8, alternative = "greater")
 @
-	
-	The effect size $\delta$ is called d in the \texttt{pwr}-package. We set \texttt{n = NULL} since this is the variable that we want to calculate. If we calculate the power, we set \texttt{power = NULL}. In an a priori power analysis, the result always has to be rounded up, so that enough participants will be collected. This means, in this example we need 25 participants per group.
-	
-	
-	\subsection{Determining $n$ for ANOVA and regression models}
-	
+
+	The effect size $\delta$ is called $d$ in the \texttt{pwr}-package. We set \texttt{n = NULL} since this is the variable that we want to calculate. If we calculate the power, we set \texttt{power = NULL}. In an a priori power analysis, the result always has to be rounded up, so that enough participants will be collected. This means, in this example we need 25 participants per group.
+
+
+	\subsection{Determining $n$ for different statistical procedures}
+
+	\subsubsection{ANOVA models}
+
 	For ANOVA and general linear models, $f$ or $f^2$ are usually used as effect size measures, where $f^2$ is simply the squared $f$. The general formula for $f$ is
-	
+
 	\[ f = \sqrt{\frac{\eta^2}{1-\eta^2}}\]
-	
-	while the calculation of $\eta^2$ depends on the particular model.
-	
-	\subsubsection{One-way ANOVA}
-	
+
+	while the calculation of $\eta^2$ depending on the particular model.
+
 	For the one-way ANOVA, $\eta^2$ is defined as
-	
+
 	\[ \eta^2 = \frac{\sigma^2_{between}}{\sigma^2_{total}}\]
-	
+
 	with $\sigma^2_{between}$ being the variance between subject groups and $\sigma^2_{total}$ the total variance of the dependent variable.
-	
+
 	In R, we can calculate the required sample size for a study with 3 groups, an effect size $f = 0.3$, a desired power of 0.9 and $\alpha = 0.05$ using the \texttt{pwr.anova.test} function of the R package \texttt{pwr}:
-	
+
 
 
 <<power anova1>>=
 pwr.anova.test(k = 3, f = 0.3, sig.level = 0.05, power = 0.9)
 @
 
-	
+
 	Since n here is the number in each group (see note in output), the total required sample size is: $48 \cdot 3 = 144$.
 
-	
-	\subsubsection{Two-way ANOVA}
-	
+
 	For the two-way ANOVA, we can be interested in three different effects:
-	
+
 	\begin{enumerate}
 		\item The main effect of variable A
 		\item The main effect of variable B
 		\item The interaction effect of A and B
 	\end{enumerate}
 
-	
-	For the main effect of A for example, $\eta^2$ is defined as
-	
-	\[ \eta^2 = \frac{\sigma^2_{A}}{\sigma^2_{A}+\sigma^2_{\epsilon}}\]
-	
-	where $\sigma^2_{A}$ is the variance between variable levels of variable A and $\sigma^2_{\epsilon}$ is the error variance.
-	
 
-	When calculating the required sample size for a two-way ANOVA in with the R package \texttt{pwr}, we use the \texttt{pwr.f2.test} function for multiple regression. I contrast to the \texttt{pwr.anova.test} function, it requires $f^2$ instead of $f$. Also, we have to specify the degrees of freedom for the numerator $u$, which in our case is the number of levels of variable A. We assume it to be 5 for this example, with $f = 0.3$ and therefore $f^2 = 3^2 = 9$. Then, $n$ can be calculated as follows: 
-	
+	For the main effect of A for example, $\eta^2$ is defined as
+
+	\[ \eta^2 = \frac{\sigma^2_{A}}{\sigma^2_{A}+\sigma^2_{\epsilon}}\]
+
+	where $\sigma^2_{A}$ is the variance between variable levels of variable A and $\sigma^2_{\epsilon}$ is the error variance.
+
+
+	When calculating the required sample size for a two-way ANOVA in with the R package \texttt{pwr}, we use the \texttt{pwr.f2.test} function for multiple regression. I contrast to the \texttt{pwr.anova.test} function, it requires $f^2$ instead of $f$. Also, we have to specify the degrees of freedom for the numerator $u$, which in our case is the number of levels of variable A. We assume it to be 5 for this example, with $f = 0.3$ and therefore $f^2 = 3^2 = 9$. Then, $n$ can be calculated as follows:
+
 
 
 <<power anova2>>=
@@ -511,150 +540,140 @@ pwr.anova.test(k = 3, f = 0.3, sig.level = 0.05, power = 0.9)
 
 
 
-	Please note that when calculating $n$ for a two-way ANOVA in G*Power, the total number of groups has to be specified that however does not have an influence on the resulting $n$ and also just like for the one-way ANOVA, $f$ is used as an effect size measure. 
-	
-	\subsubsection{Repeated measures ANOVA}
-	
-	The usual formula for calculating the effect size of a repeated meausures ANOVA is
-	
-	\[\eta^2_{par} = \frac{\sigma^2_{zw}}{\sigma^2_{zw}+\sigma^2_{\epsilon}}\]
-	
-	This formula already implicitly contains the size of the correlation between the measures. 
-	When using G*Power for the power analysis of a repeated measures ANOVA, it has to be noted that G*Power knows different ways of calculating the effect size. In case the above formula is used, the settings have to be changend to "as in SPSS". Then, the correlation between measures does not have to be specified explicitly.
-	
-	Power analysis for repeated measures ANOVA is not possible with the \texttt{pwr} package. 
-	
-	
-	
-\subsubsection{Simple linear regression}
-	
-In a linear regression, there are two different possible effect sizes that can be tested. 
-	
+	Please note that when calculating $n$ for a two-way ANOVA in G*Power, the total number of groups has to be specified, which however does not have an influence on the resulting $n$ and also just like for the one-way ANOVA, $f$ is used as an effect size measure.
 
+	Power analysis for repeated measures ANOVA is not possible with the \texttt{pwr} package. Other software has to be used (see below).
+
+	The usual formula for calculating the effect size of a repeated measures ANOVA is
+
+	\[\eta^2_{par} = \frac{\sigma^2_{zw}}{\sigma^2_{zw}+\sigma^2_{\epsilon}}\]
+
+	This formula already implicitly contains the size of the correlation between the measures.
+	When using G*Power for the power analysis of a repeated measures ANOVA, it has to be noted that G*Power knows different ways of calculating the effect size. In case the above formula is used, the settings have to be changed to "as in SPSS". Then, the correlation between measures does not have to be specified explicitly.
+
+
+\subsubsection{Simple linear regression}
+
+In a linear regression, there are two different possible effect sizes that can be tested.
 
 
 \begin{enumerate}
-		\item $\beta_z$: Is the slope significantly different from 0?
+		\item $\beta_z$: Is the regression coefficient significantly different from 0?
 		\item $\rho^2$: omnibus test: Is $R^2$ significantly different from 0?
 \end{enumerate}
-	
-	
-In the simple linear regression, those two are equivalent, except for the fact that the first hypothesis is tested with a t-test and the second with an F-test and therefore only the first hypothesis can be tested in a one-sided test.
-	
+
+In the simple linear regression, those two are equivalent, except for the fact that the first hypothesis is tested with a Wald Test ($z$ or $t$) and the second with an F-test and therefore only the first hypothesis can be tested one-sided.
+\stella{Kann man das so nennen? "tested one-sided"? Oder sagt man da besser "tested in a one-sided test"?}
+
 The formula for calculating the effect size $f^2$ for the F-test is:
-	
+
 \[ f^2 = \frac{R^2}{1- R^2} \]
-	
+
 	with $R^2$ being the squared (multiple) correlation.
-	
+
 	In the \texttt{pwr} package, we use the \texttt{pwr.f2.test} function, we already know from the two-way ANOVA, whereas now, $u$ stands for the number of predictors. For a regression with one predictor ($u = 1$) and a squared correlation of $r^2 = 0.01$ ($f^2 = 0.01^2/(1-0.01^2) = 0.0101$), we get:
-	
+
 <<power regression1>>=
 	pwr.f2.test(u = 1, f2 = 0.0101, sig.level = 0.05, power = 0.8)
 @
 
-		
+
 	\subsubsection{Multiple regression}
-	
-	In regressions with more than one predictor, power analysis for the regression coefficient $\beta_z$ gets tricky when those predictors are correlated. With collinear predictors, the standard error of the estimator $\beta_z$ and therefore also the power of $\beta_z$ depend on the size of the collinearity - the higher the collinearity, the higher the power.
-	
-	One solution of course would be to only use uncorrelated predictors, which is highly unlikely. And the other solution is to use the partial $r^2$ as effect size measure that is independent of the size of the collinearity.
-	There are thus two possible effect size measures for which power analysis for multiple regression can be done in an analytical way:
-	
+
+	In regressions with more than one predictor, power analysis for the regression coefficient $\beta_z$ gets tricky when those predictors are correlated. With collinear predictors, the standard error of the estimator $\beta_z$, which we need for the $t$-test, depends on the size of the collinearity - the higher the collinearity, the higher the power.
+
+	One solution of course would be to only use uncorrelated predictors, which is almost impossible. And the other solution is to use the partial $r^2$ as effect size measure that is independent of the size of the collinearity.
+	There are three possible effect size measures for which power analysis for multiple regression can be done in an analytical way:
+
 	\begin{enumerate}
 		\item $f^2$ for the entire model
-		\item $f^2$ for the explanatory contribution of a single predictor 
+		\item $f^2$ for the explanatory contribution of a single predictor
+		\item A single regression coefficient $\beta_{zi}$ (no longer possible to calculate in an analytical way for more than two predictors)
+		\stella{Stimmt das? Ist es analytisch nicht möglich? Oder einfach nicht mehr einfach?}
 	\end{enumerate}
-	
-	In the \texttt{pwr} package, the power analysis for the first case works in the same way as for the simple linear regression, except that now $u$ is not $1$ anymore. 
-	
-	One example with $5$ predictors and a squared multiple correlation of $R^2=0.13$ resulting in $f^2 = 0.13^2 = 0.15$ is:
-	
+
+	In the \texttt{pwr} package, the power analysis for the first case works in the same way as for the simple linear regression, except that now $u$ is not $1$ anymore.
+
+	One example with $5$ predictors and a squared multiple correlation of $R^2 = 0.13$ resulting in $f^2 = 0.13^2 = 0.15$ is:
+
 <<power regression2>>=
 	pwr.f2.test(u = 5, f2 = 0.15, sig.level = 0.05, power = 0.9)
 @
-	
+
 	For computing $n$ for the second case, the increase in $R^2$, we simply have to specify the amount by which $R^2$ is expected to increase when adding the predictor to the model. And for the \texttt{pwr.f2.test} function, $u$ has to be set to $1$.
-	In the same way, it is also possible to do a power analysis for a moderation. The multiplicative term is simply treated as an additional predictor in the model, for which we have to set an expected increase in $R^2$. 
+	In the same way, it is also possible to do a power analysis for a moderation. The multiplicative term is simply treated as an additional predictor in the model, for which we have to set an expected increase in $R^2$.
 	Power analysis for mediation however is not that simple and requires additional software. If mediation for example is tested with the Sobel test, the R package \texttt{powerMediation} can be used. Another option is to use indirect effect confidence intervals for which power can be calculated using a Monte Carlo approach that for example was implemented in an online tool by Selig \& Preacher (2012):
 	\url{https://schoemanna.shinyapps.io/mc_power_med/}
 	\stella{Referenz richtig einfügen}
 	{\centering
 		\noindent\rule{10cm}{0.4pt}
-		
+
 	}
 	\vspace{0.5cm}
-	
+
 	Other R functions and packages that can be used for power analysis for ANOVA and regression in R:
 	\begin{itemize}
 		\item The \texttt{power.anova.test} function of the \texttt{stats} package for a one-way ANOVA
 		\item The \texttt{WebPower} package with the functions \texttt{wp.anova} for one-way ANOVA, \texttt{wp.rmanova} for repeated measures ANOVA and \texttt{wp.regression} for regression analysis
 	\end{itemize}
 	\stella{Für mich: Bei diesen Funktionen noch mal schauen, was die genau machen. Für welche Modelle gehen die alles? Ist das alles analytisch oder auch mit Simulation?}
-	
 
-	\subsection{Determining $n$ for IRT models}
-	
-	In Item-Response-Theory (IRT), different statistical tests are possible to test the model fit, of which the most commonly used ones are the Wald test, the likelihood ratio (LR) test and the score statistics.  
+
+	\subsubsection{IRT models}
+
+	In Item-Response-Theory (IRT), different statistical tests are possible to test the model fit, of which the most commonly used ones are the Wald test, the likelihood ratio (LR) test and the score statistics.
 	\stella{RUDI: Sollen wir gradient statistic auch mit aufführen?}
 	Only few analytical procedures have been suggested for power calculation of these tests. For example Draxler (ref) and Draxler and Alexandrowicz (ref) provided formulae for power analysis of these tests for those IRT models that can be estimated with conditional maximum likelihood (CML) estimation (like the Rasch model and the partial credit model (PCM).
 	\stella{Gibt es dazu ein R package oder wie wird das praktisch gemacht?}
-	Zimmer, Draxler and Debelak (ref) suggested a method for an analytical power analysis that can also be used for other IRT models that can only be estimated with marginal maximum likelihood (MML) estimation. 
+	Zimmer, Draxler and Debelak (ref) suggested a method for an analytical power analysis, which can also be used for other IRT models that can only be estimated with marginal maximum likelihood (MML) estimation.
 	\stella{Ich habe hier den Teil mit der exponential family raus gelassen, weil ich mir nicht sicher war, ob das nicht zu technisch ist. Können wir aber auch wieder einfügen}.
-	Another approach for power analysis for IRT models, is to use a sampling-based method (Gustadisegni et al., 2021; Gudicha et al., 2017; Zimmer et al., 2022), that is particularly recommendable with a large number of items, where the analytical procedures get very time consuming.
+	Another approach for power analysis for IRT models, is to use a sampling-based method (Gustadisegni et al., 2021; Gudicha et al., 2017; Zimmer et al., 2022), which is particularly recommendable with a large number of items, where the analytical procedures get very time consuming.
+
+
+
 	\stella{RUDI: Könntest du hier beschreiben, wie die Verfahren von euch funktionieren?}
-	
-	\subsection{Determining $n$ for Multilevel models}
-	
-	\begin{itemize}
-		\item Very few analytical procedures
-		\item problem: ?
-		\item Most applications for power analysis for multilevel models focus on simulation studies. 
-	\end{itemize}
-	
-	
-	One problem in power analysis for multilevel models is that significance tests are not as straightforward as they are in regression models. Three different types of significance tests are available:
-	
+
+	\subsubsection{Multilevel models}
+
+
+The two basic challenges of power analysis for multilevel models are i) to find the right test statistic for the significance test of interest and ii) to decide for which level the sample size shall be determined.
+
+In general, one has to distinguish between significance testing for fixed and for random effects. For the fixed effects, the same three types of significance tests are available as in multiple regression:
+
 	\begin{enumerate}
-		\item Testing random effects with an LR test
+		\item Testing the fill model with an LR test
 		\item Testing single fixed effects with a $t$-test
 		\item Testing single fixed effects with an LR test
 	\end{enumerate}
-	
-	
-	General rules
-	
-	\begin{itemize}
-		\item Nested data have a lower power than random samples
-		\item For effects on level 1: $n$ in level 1 more important
-		\item For effects on level 2: $n$ in level 2 more important
-		\item Cluster size is not that important
-		\item Therefore: number of clusters always most important
-		\item Power increases with fewer students per class and more classes 
-		\item This effect is most dominant for a high correlation within cluster (e.g. in repeated measures design)
-		\item moreover: In case of few level 2 units, estimation problems become more likely
-		\item Of course, this must always be weighed against the costs: Recruiting a new school / class or more people for the measurement repetition is usually more costly than increasing the measurements within a group
-	\end{itemize}
-	
+
+The $t$-test works the same way as for other regression models, by dividing the coefficient by its standard error. Raudenbush and Bryk (2002) provide a formula for the standard error estimate. The difficulty for this $t$-test lies in the determination of the degrees of freedom. Different formulae seem to be used in different statistical software (for an overview see Newsom, 2019). For sufficiently large sample sizes and in decently balanced designs though, these different tests seem to come to fairly similar conclusions (wahrscheinlich auch Raudenbush zitieren). In R, the $t$-test can be run by using the \texttt{lmerTest} package.
+
+
+SPSS and the \texttt{lme4} package in R both use the approximation of the degrees of freedom by Satterthwaite (1946), which has been shown to work fairly well in most instances (Manor \& Zucker, 2004). This approach can also be used for an analytical power analysis in R and is implemented in the \texttt{powerlmm} package.
+
+For testing random effects, theoretically it is also possible to use a $t$-test or $\chi^2$-test. Since variances are in nature non-negative, we are testing at the edge of the parameter space though, which leads to unreliable solutions.
+
+Therefore we advice to use the LR-Test for testing random effects (and maybe also fixed effects) in multilevel models. And for this type of test, the usual procedure is to perform a simulation based power analysis.
+
 	Simulations can be programmed by hand. In the following, we will consider the simple example of students clustered in classes. The goal is to investigate the influence of the number of oral contributions of a student on his later grade. We hypothesise that the number of teaching contributions has a positive influence. The multilevel model has the following shape
-	
+
 	\[y_{ij} = \beta_0 + \beta_1 + u_j + e_{ij}\]
 	\[u_j \sim N(0,\sigma^2_u), e_{ij} \sim N(0,\sigma^2_{\epsilon})\]
-	
+
 	And we assume the following parameters:
-	
+
 	\[\beta_0 = 0, \beta_1 = 0.1, \sigma_u = 0.3, \sigma_{\epsilon} = 0.8 \]
-	
+
 	Just like in the first simulation, we first have to set the parameters. $class$ is the number of classes and $npup$ is the number of pupils per class.
 Then, we create an object for the results and start simulating the data.
-	
+
 
 <<simulation2>>=
 	N = 500
-	
-	
-	nclass <- 20 
-	npup <- 27 
+
+
+	nclass <- 20
+	npup <- 27
 	beta0 <- 0
 	beta1 <- 0.1
 	sd_int <- 0.3
@@ -663,146 +682,121 @@ Then, we create an object for the results and start simulating the data.
 	sig <- rep(NA, N)
 
 	set.seed(1234)
-	
+
 	for (i in 1:N){
-		
+
 		x <- rnorm(nclass * npup)
 		class <- rep(1:nclass, each = npup)
-		
+
 		randint <- rep(rnorm(nclass,0,sd_int), each = npup)
 		err <- rnorm(nclass * npup, 0, sd_err)
-		
+
 		y <- beta0 + beta1 * x + randint + err
-		
-		
+
+
 		library(lme4)
 		mod <- lmer(y ~ x + (1| class))
-		
+
 		m0 <- lmer(y ~ (1|class))
 		sig[i] <- anova(m0,mod)[2,8] < 0.05
 	}
-	
-	
+
+
 	sum(sig)/N
 @
-	
+
 
 	$x$ is the independent variable, $class$ is the id variable for the class, $randint$ and $err$ are the random effects and $y$ is the dependent variable. With the \texttt{lmer} function, we fit the mixed model and with the \texttt{anova} function, we can test the model.
 
-	
-	But for most scenarios, the R package \texttt{SIMR} is a useful tool. 
-	
+	But for most scenarios, the R package \texttt{SIMR} is a useful tool.
+
 	\stella{SIMR Beispiel hier einfügen}
 
-	
-	Tools for special cases:
-	
+
+	Additionally, to performing power analysis, there are also some general rules when determining the optimal sample size for multilevel models:
+
+
+	\begin{itemize}
+		\item Nested data have a lower power than random samples
+		\item For effects on level 1: $n$ in level 1 more important
+		\item For effects on level 2: $n$ in level 2 more important
+		\item Cluster size is not that important
+		\item Therefore: number of clusters always most important
+		\item Power increases with fewer students per class and more classes
+		\item This effect is most dominant for a high correlation within cluster (e.g. in repeated measures design)
+		\item moreover: In case of few level 2 units, estimation problems become more likely
+		\item Of course, this must always be weighed against the costs: Recruiting a new school / class or more people for the measurement repetition is usually more costly than increasing the measurements within a group
+	\end{itemize}
+
+
+There also some ready to use applications available online for a more or less restricted range of scenarios of multilevel models:
+
 	\begin{itemize}
 		\item \url{https://powerupr.shinyapps.io/index/}: Relatively broad range of experimental designs (including mediation and facilitation)
 		\item \url{https://jakewestfall.shinyapps.io/crossedpower/}: Crossed random effects ( participants \& stimuli)
 		\item \url{https://aguinis.shinyapps.io/ml_power/}: Crossed level interaction effects
-		
+
 	\end{itemize}
-	\subsection{Determining $n$ for Structural equation models (SEM)}
-	
-	Main goal: Comparison of model implied variance covariance matrix with empirical variance covariance matrix
-	
-	Commonly used measure for calculating this difference: $F_{ML}$ value:
-	
-	\[F_{ML(\Theta)}=log|\Sigma| + tr(S\Sigma^{-1}) - log|S| - p \]
-	
-	Calculation of Chi Square value
-
-\end{document}
 
 
+	\subsection{Structural equation models (SEM)}
 
+When evaluating the fit of Structural equation models (SEM), the rationale is to compare the model implied variance covariance matrix with the empirical variance covariance matrix.
+A commonly used measure for calculating this difference is the $F_{ML}$ value:
 
+	\[F_{ML(\Theta)} = log|\Sigma| + tr(S\Sigma^{-1}) - log|S| - p \]
 
-## **5. Crucial decisions**
+where $p$ is the number of parameters to be estimated. The estimation consists of iteratively changing the parameters so that $F_{ML}$ is minimal. This value can be transformed into a $\chi^2$-test statistic in the following way:
+
+\[Xi^2 = F_{ML} \cdot (N - 1)\]
+
+The degrees of freedom for the $\chi^2$ model test are determined by calculating the difference between the number of unique pieces of information (variances and covariances) and the number of parameters to be estimated. The number of variances and covariances, also called the knowns are calculated by
+
+\[\frac{k(k + 1)}{2}\]
+with k being the number of manifest variables.
+And the number of parameters, also called the unknowns, are determined by counting all parameters of the model that are estimated (i.e. not fixed).
+The resulting $\chi^2$ test is the main criterion for evaluating the model fit, i.e. whether the model implied variance-covariance matrix significantly differs from the empirical variance-covariance matrix. If the $\chi^2$ test statistic is NOT statistically significant, then the model can be considered to be a reasonable representation of the empirical data. Arguably, however, there are always alternative models that can fit the data just as well or even better. Please note that with increasing sample size, it is increasingly likely that the test for absolute model fit will become statistically significant, with only minor deviations then being flagged as statistically significant.
+
+For power analysis in SEM, one option is to directly use the $\chi^2$ value as effect size measure that directly determines the expected value under the alternative hypothesis. Alternatively, there are other values that can be considered as effect size measures to evaluate the fit of a model - the so-called fit indices. They are essentially based on the $\chi^2$-test variable and indicate an acceptable model fit according to published rules of thumb (Hu \& Bentler, 1999).
+
+There are three main approaches to SEM power analysis:
+
+\begin{enumerate}
+\item RMSEA based approach suggested by MacCallum, Browne and Sagawara (1996)
+\item $\chi^2$ based approach suggested by Satorra and Saris (1985)
+\item Simulation based approaches
+\end{enumerate}
+
+\subsubsection{RMSEA based approach}
+
+\subsubsection{$\chi^2$ based approach}
+
+\subsubsection{Simulation based approaches}
+
+\stella{RUDI: Hier könntest du das machine learning Verfahren von euch ausführlicher beschreiben.}
+
+\section{Crucial decisions}
 
 For any a priori power analysis, we have to pre-define the required $\alpha$ level, the required power, and the expected effect size.
 
-In the social sciences, the $\alpha$ level is typically set to 5\%, and in cases where one decides to be more strict to 1%.
-Of course, these are arbitrary rules and there are good reasons for e.g. lowering the $\alpha$ level to 0.1%, for instance. 
+In the social sciences, the $\alpha$ level is typically set to 5\%, and in cases where one decides to be more strict to 1\%.
+Of course, these are arbitrary rules and there are good reasons for e.g. lowering the $\alpha$ level to 0.1\%, for instance.
 
-It is not so clear, how to determine the required power, because there are no established guidelines. If there is a theretical reason for a particular power, this would be the first choice. If not, researchers typically choose one of the most commonly used values that are 80%, 90%, and 95%.
+It is not so clear, how to determine the required power, because there are no established guidelines. If there is a theoretical reason for a particular power, this would be the first choice. If not, researchers typically choose one of the most commonly used values, which are 80\%, 90\%, and 95\%.
 
 The next section addresses how we can determine the expected effect size.
 
-### **5.1. How to determine the expected effect**
+\subsection{Determining the expected effect}
 
-The question of how to determine the expected effect is one of the most crucial topics in power analysis and sample size calculations. The optimal solution, would be to have it based on theory. However, theories and measurements in the social sciences are mostly not precise enough to allow for a specific theory-based effect size. 
+The question of how to determine the expected effect is one of the most crucial topics in power analysis and sample size calculations. The optimal solution, would be to have it based on theory. However, theories and measurements in the social sciences are mostly not precise enough to allow for a specific theory-based effect size.
 
-Therefore, the most common way in practice is to base power analyses on published effect sizes, that are supposed to reflect the underlying true effect. Even though this aussumption seems very straightforward, it is in fact very problematic. Replication studies have shown that 83% of all published correlations are higher than in the replication, the mean correlation over all original studies being 0.40 and over the replications being 0.20 [@open2015estimating]. Publication bias, which refers to the problem that only statistically significant test results are published, which in turn report higer effect sizes, are one reason the reported effect sizes are likely to be overestimated. For estimation of the true effect size, all studies (also those with non-significant effects) have to be considered. Franco and colleagues [-@franco16] could show that reported effect sizes are twice as large as unreported effect sizes. Such a difference dramatically changes the sample size needed for a chosen power. In the literature therefore it is mostly suggested to divide the reported effect sizes by two and use that value for the sample size calculation. It has also been suggested to use the lower end of a 60% confidence interval around the reported effect sizes ["Safeguard Power" by @perugini14]. 
+Therefore, the most common way in practice is to base power analyses on published effect sizes that are supposed to reflect the underlying true effect. Even though this assumption seems very straightforward, it is in fact very problematic. Replication studies have shown that 83\% of all published correlations are higher than in the replication, the mean correlation over all original studies being 0.40 and over the replications being 0.20 [@open2015estimating]. Publication bias, which refers to the problem that only statistically significant test results are published, which in turn report higher effect sizes, are one reason the reported effect sizes are likely to be overestimated. For estimation of the true effect size, all studies (also those with non-significant effects) have to be considered. Franco and colleagues [-@franco16] could show that reported effect sizes are twice as large as unreported effect sizes. Such a difference dramatically changes the sample size needed for a chosen power. In the literature therefore it is mostly suggested to divide the reported effect sizes by two and use that value for the sample size calculation. It has also been suggested to use the lower end of a 60\% confidence interval around the reported effect sizes ["Safeguard Power" by @perugini14].
 
-Without the use of reported effect sizes, researchers can specify the smallest possible effect size they still consider meaningful in practice or clinically relevant. In a study on a treatment for insomnia, for example, this could be the number of minutes, by which the total sleep duration should increase, imagining we know that an increase of 2 hours of sleep (120 minutes) is clinically relevant. Here, it is relatively straightforward for experts to set a number that is clinically relevant. In many other cases it is, however, not that easy. This is for example the case when very abstract scales of measures are used. This could be for example anxiety that is measured by the total score on an anxiety scale.  
+Without the use of reported effect sizes, researchers can specify the smallest possible effect size they still consider meaningful in practice or clinically relevant. In a study on a treatment for insomnia, for example, this could be the number of minutes, by which the total sleep duration should increase, imagining we know that an increase of 2 hours of sleep (120 minutes) is clinically relevant. Here, it is relatively straightforward for experts to set a number that is clinically relevant. In many other cases it is, however, not that easy. This is for example the case when very abstract scales of measures are used. This could be for example anxiety that is measured by the total score on an anxiety scale.
 
-## **6. Sample size calculation for more complex models**
+\section{Discussion}
 
-In Section 1, we have seen that for the calculation of power and therefore also for the sample size calculation in Section 4, we need the distribution of the test statistic under the alternative hypothesis. Unfortunately, there are statistical tests for which this distribution cannot be determined that easily. In such scenarios, a different procedure has to be used.
-
-One approach is to determine the influence of $n$ on the standard error of the effect estimator. Maximum likelihood estimators are asymptotically normally distributed, and thus we can use a $z$-test with a test statistic of the form $\frac{\textrm{effect size}}{\textrm{standard error}}$.
-
-The other approach is to use simulation studies to determine the power of different sizes of $n$. This means that many different samples are randomly created for each size of $n$. They all have the same true effect size, that, of course, still has to be set by the researcher. Then, the statistical test of interest is run on each of them, and the number of significant test results is counted. The proportion of significant test results of the total number of samples is the power. 
-
-Sometimes, in more complex models, there are different effect sizes of interest. In this case, one option is to determine the power for the smallest expected effect size. This results in the highest required $n$. The other option is to determine the power for one pre defined main target effect.
-
-The advantage of simulation studies for power calculations is, that it can be done for any type of analysis. Even a combination of questions can be examined as, for example, the power for jointly testing all effects derived from a certain theory. Additionally, it is possible to analyze the influence of other factors, such as violations of the assumption of normality. 
-
-The problem, however, of power analysis for very complex models, such as multilevel models, is, that everything that might have an influence (e.g., all parameters of the model) has to be prespecified, which can involve a lot of decisions that are usually difficult to make.
-
-
-## **Solutions**
-
-**1.**
-The investigator can increase the power by increasing the sample size, using a within design instead of between design, and by using highly reliable measures (low measurement error), which decreases the standard deviation of the target measure.
-
-**2.** 
-
-```{r}
-pwr.norm.test(d = 0.3, n = 25, sig.level = 0.05, power = NULL, alternative = "greater")
-```
-
-The power is 44.24% and thus much lower than in the example. This is because smaller effect sizes have less power, meaning they are much less likely to be detected than high effect sizes.
-
-**3.** 
-
-```{r}
-pwr.norm.test(d = 0.3, n = NULL, sig.level = 0.05, power = 0.8, alternative = "greater")
-```
-
-To achieve a power of 80% for this effect size, 69 subjects are needed.
-
-**4.**
-
-
-```{r}
-pwr.norm.test(d = 0.3, n = 25, sig.level = 0.05, power = NULL, alternative = "two.sided")
-```
-
-The power decreases to 32.30%.
-
-**5.**
-
-
-```{r}
-pwr.t.test(type="paired", d=0.4, n=NULL, sig.level = 0.05, power = 0.9, alternative="greater")
-```
-
-55 subjects have to be tested.
-
-**6.**
-
-
-```{r}
-pwr.t.test(type="paired", d=NULL, n=10, sig.level = 0.05, power = 0.9, alternative="greater")
-```
-
-An effect of $\delta$ = 0.4 is needed to achieve a power of 90% with $n$=10.
-
-
-## References
+\section{References}
 
 
 \end{document}
