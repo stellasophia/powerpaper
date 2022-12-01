@@ -99,7 +99,7 @@ $^{2}$ \quad Department of Psychology, University Zurich, Binzmuehlestrasse 14, 
 
 
 In the wake of the replication crisis in the social sciences (e.g., psychology, economics) in recent years, the vital importance of power analysis - and in particular, sample size planning - has become increasingly obvious. Reviewers, funding agencies, and task forces to improve psychological science are requesting documentations of sample size planning, or at least post-hoc power analyses more and more often \citep[e.g.,][]{funder2014improving, murphy2018power, wilkinson1999statistical}.
-However, power analysis is still seldomly used in psychological research \citep[e.g.,][]{bakker2016researchers, gotz2021goldilocks, tressoldi2015pervasive}. In addition, researchers report conceptual, and practical difficulties as to, exemplarily, how to elicit the required effect sizes, or computing power analyses for complex study designs \citep{bakker2016reseachers, collins2021using}. In the study by Collins et al. \citet{collings2021using}, even researchers generally familiar with power analysis rather often report that their sample design is ultimately based on other criteria.
+However, power analysis is still seldomly used in psychological research \citep[e.g.,][]{bakker2016researchers, gotz2021goldilocks, tressoldi2015pervasive}. In addition, researchers report conceptual, and practical difficulties as to, exemplarily, how to elicit the required effect sizes, or computing power analyses for complex study designs \citep{bakker2016researchers, collins2021using}. In the study by Collins et al. \citet{collins2021using}, even researchers generally familiar with power analysis rather often report that their sample design is ultimately based on other criteria.
 Possible reasons might be that although power analysis is required by many reviewers, and funding agencies, to many researchers, it is not particularly obvious why power is actually so important regarding the trustworthyness of statistical inferences. For example, there is ample evidence that the positive predictive value (PPV), a concept that is crucial to understanding the importance of power, and of tests in general, is not easily understood even for trained professionals \citep[for an overview of understanding of PPV among clinical doctors, see][]{ghosh2005translating}.
 \stella{Eventuell brauchen wir hier mehr Quellen}
 %One reason of which could be that it is a rather complex concept for which there are very few understandable text books.
@@ -137,7 +137,6 @@ In contrast to the classic power analysis, in recent years, a new form of power 
 	In statistical testing, we examine probabilities under a certain assumption. Significance tests are based on the assumption that the null hypothesis is true. The $\alpha$-error, for example, is the probability of a false positive which is a significant result, given that the null hypothesis is true (i.e., conditional on the null hypothesis). In Table \ref{tab:error}, the case that the null hypothesis is true is represented in the left column.
 
 	\begin{table}[ht]
-	\label{tab:decerr}
 		\caption{\textbf{Illustration of decision errors.}}
 			\label{tab:error}
 		\centering
@@ -172,7 +171,7 @@ Let us consider our example of a treatment that is supposed to increase individu
 	\end{table}
 
 
-For power analysis, we now need to change the underlying reality: Instead of assuming the null hypothesis to be true, we now assume that the alternative hypothesis is true in that we condition on the alternative hypothesis. This is represented by the right columns in both tables. Again, the significance test has two possible outcomes: If the test is negative, it is a false negative (also called type II-error); if the null hypothesis is rejected, it is a true positive (see Table \ref{tab:decerr}). The corresponding probabilities are called $\beta$ (the probability of a Type II-error), and 1-$\beta$ (the probability of a true positive), as can be seen in Tabel \ref{tab:errorprob}. 1-$\beta$ is called the power of the test. Thus, power gives an answer to the question: What is the probability that a statistical test is significant, given that the effect exists (probability of a true positive). Regarding our example, the statistical power indicates the probability that the test is significant, given that the treatment does increase concentration performance.
+For power analysis, we now need to change the underlying reality: Instead of assuming the null hypothesis to be true, we now assume that the alternative hypothesis is true in that we condition on the alternative hypothesis. This is represented by the right columns in both tables. Again, the significance test has two possible outcomes: If the test is negative, it is a false negative (also called type II-error); if the null hypothesis is rejected, it is a true positive (see Table \ref{tab:error}). The corresponding probabilities are called $\beta$ (the probability of a Type II-error), and 1-$\beta$ (the probability of a true positive), as can be seen in Tabel \ref{tab:errorprob}. 1-$\beta$ is called the power of the test. Thus, power gives an answer to the question: What is the probability that a statistical test is significant, given that the effect exists (probability of a true positive). Regarding our example, the statistical power indicates the probability that the test is significant, given that the treatment does increase concentration performance.
 
 	In simple cases, probabilities can be visualized as areas \rudi{Das ist ein Trigger für die Kurven später, aber im Allgemeinen funktioniert diese Visualisierung nur schwer, z.B. wenn man simulationsbasierte Ansätze durchführt}. For visualizing the probabilities $\alpha$, $\beta$, and 1-$\beta$, we use probability distributions. The area under the probability distribution for a given interval represents the probability that the values in this interval occur, given the respective hypothesis. Which probability distribution we use, depends on the test statistic, which in turn depends on the statistical test we use.
 	For simplicity, we are going to use the $z$-test as an example. Its test statistic $z$ is standard normally distributed, so that we can use the normal distribution for illustration in the following. Under the null hypothesis, the expected value of the $z$-distribution is 0 and the standard deviation is 1.
@@ -960,12 +959,11 @@ There are three main approaches to SEM sample size planning:
 The decision between the RMSEA based and the $\chi^2$ based procedure should primarily be made contingent upon whether one wants to detect a deviation of the overall model fit (RMSEA based), or is mainly interested in a particular coefficient ($\chi^2$ based).
 
 
-\subsubsection{$\chi^2$ based approach}
-
-When the $\chi^2$ value is directly used for sample size planning, we need the exact specification of two correlation matrices: One under the null hypothesis and one under the alternative hypothesis. They are the model implied variance covariance matrices under the null and the alternative model respectively. The alternative model is the one that we assume is true in the population and the null model contains one restriction to that model, i.e. one parameter is fixed to a different value.
+\textbf{$\chi^2$-based Approach.}
+When the $\chi^2$-value is directly used for sample size planning, we need the exact specification of two correlation matrices: One under the null hypothesis, and one under the alternative hypothesis. They are the model implied variance-covariance-matrices under the null, and the alternative model, respectively. The alternative model is the one that we assume to betrue in the population, and the null model contains one restriction to that model (i.e. one parameter is fixed to a different value).
 The idea of the sample size planning is then to determine the required sample size to detect the given misspecification.
 
-In order to obtain the variance covariance matrix under the alternative hypothesis, we can simply use the \texttt{sem} function from the \texttt{lavaan} package \citep{lavaan}. By only specifying a model and no data to this function, we can obtain the model implied variance covariance matrix. We are going to call this matrix the alternative variance covariance matrix and we are going to use it as the empirical matrix for the next step. As an alternative model, we are going to use a two factor model with four items for each factor and a factor intercorrelation of .9. All loadings also have to be specified:
+In order to obtain the variance-covariance-matrix under the alternative hypothesis, we can simply use the \texttt{sem} function from the \texttt{lavaan} package \citep{lavaan} in R. By simply specifying a model and supplying this function no data, we can obtain the model implied variance-covariance-matrix. We call this matrix the alternative variance-covariance-matrix, and we are going to use it as the empirical matrix for the next step. As an alternative model, we are going to use a two-factor-model with four items for each factor, and a factor intercorrelation of .90. All loadings also have to be specified:
 
 <<santorra power>>=
 # install.packages(lavaan)
@@ -997,7 +995,7 @@ library(lavaan)
 cov.alt <- fitted(sem(model.alt))$cov
 @
 
-The restriction (here: misspecification) in the null model will be a factor intercorrelation of 1.00. All other parameters can be freely estimated, since the factor intercorrelation is the only parameter we are interested in:
+As a restriction (here: a misspecification) in the null model, we use a factor intercorrelation of 1.00. All other parameters can be freely estimated, since the factor intercorrelation is the only parameter that we are interested in:
 <<santorra h1>>=
  model.null <- '
             f1 =~ NA*x1 + x2 + x3 + x4
@@ -1010,7 +1008,7 @@ The restriction (here: misspecification) in the null model will be a factor inte
  '
 @
 
- This model is now fit to the above calculated alternative variance covariance matrix using an arbitrarily set $n$. The model implied variance covariance matrix from that estimation as well as its degrees of freedom are then used for the sample size planning with the \texttt{semPower} package\citep{semPower}:
+ This model is now fit to the above calculated alternative variance-covariance-matrix using an arbitrarily set $n$. The model implied variance-covariance-matrix from that estimation, as well as its degrees of freedom are then used for the sample size planning with the \texttt{semPower}-package\citep{semPower}:
 
  <<santorra fitnull >>=
  fit.null <- sem(model.null, sample.cov = cov.alt, sample.nobs = 1000, sample.cov.rescale = F, likelihood='wishart')
@@ -1030,20 +1028,19 @@ The restriction (here: misspecification) in the null model will be a factor inte
 
 @
 
-We need 860 people to detect a factor inter-correlation of .90 between f1 and f2 with a power of 80\%.
+In sum, we need 860 people to detect a factor inter-correlation of .90 between f1 and f2 with a power of 80\%.
 
-\subsubsection{RMSEA based approach}
-
-For sample size planning with the RMSEA the fact is used that the RMSEA is a function of the fit function $F_{ML}$ that is used for calculating the $\chi^2$ value. Hence, the RMSEA also can be transformed into the noncentrality parameter for the $\chi^2$ distribution under the alternative hypothesis. Common conventions for the RMSEA say, that under the null hypothesis that the model fits the data, the RMSEA should be less than .05 \citep[e.g.][]{browne1992alternative}:
+\textbf{RMSEA-based Approach.}
+For sample size planning using RMSEA, the fact is used that RMSEA is a function of the fit function $F_{ML}$ that is used for calculating the $\chi^2$-value. Hence, the RMSEA also can be transformed into the noncentrality parameter for the $\chi^2$-distribution under the alternative hypothesis. Common conventions for the RMSEA say, that under the null hypothesis that the model fits the data, the RMSEA should be less than .05 \citep[e.g.,][]{browne1992alternative}:
 \[H_0: RMSEA < .05 \].
-Browne and Cudeck \citet{browne1992alternative} suggested that values between .05 and .08 indicate a fair fit and values between .08 and .10 were declared as a poor fit, whereas MacCallum et al. \citet{maccallum1996power} consider values between .08 and .10 to indicate a mediocre fit.
+Specifically, Browne and Cudeck \citet{browne1992alternative} suggested that values between .05 and .08 indicate a fair fit, and values between .08 and .10 indicated poor fit - MacCallum et al. \citet{maccallum1996power} considered values between .08 and .10 to indicate a mediocre fit.
 
-According to these guidelines, a researcher can set an individual effect size for the alternative hypothesis. For a stricter test that detects any deviation from the null hypothesis, the alternative hypothesis could be set to .05
+According to these guidelines, a researcher can set an individual effect size for the alternative hypothesis. For a stricter test that detects any deviation from the null hypothesis, the alternative hypothesis could be set to .05:
 \[ H_1: RMSEA = .05 \]
-and for less strict tests, the alternative hypothesis could for example be set to .08.
+Likewise, for less strict tests, the alternative hypothesis could for example be set to .08:
 \[ H_1: RMSEA = .08 \]
 
-The RMSEA based power analysis is implemented in the \texttt{semPower} package. For an example we can consider a model of 12 manifest variables and 27 parameters that result in 78 - 27 degrees of freedom.  an RMSEA under the alternative of .05, an $\alpha$-level of .05 and a desired power of .80, one could use the function \texttt{semPower.aPriori} for sample size planning in the following way
+The RMSEA-based power analysis is implemented in the \texttt{semPower}-package. For an example, we can consider a model of 12 manifest variables, and 27 parameters that result in 78 - 27 degrees of freedom. For an RMSEA under the alternative of .05, an $\alpha$-level of .05 and a desired power of .80, one could use the function \texttt{semPower.aPriori} for sample size planning in the following way:
 <<RMSEA based>>=
 # install.packages(semPower)
 library(semPower)
@@ -1056,9 +1053,8 @@ aprio <- semPower.aPriori(
 summary(aprio)
 @
 
-\subsubsection{Simulation-based approaches}
-
-As was the case with multilevel models, it is possible to use the results of simulations to estimate the power of a statistical test for a given sample size and a given pair of null and alternative hypotheses. The overall procedure is identical to that of simulation-based approaches for IRT models.
+\textbf{Simulation-based Approaches:}
+As we have already seen with regard to multilevel models, it is possible to use the results of simulations to estimate the power of a statistical test for a given sample size, and a given pair of null and alternative hypotheses. The overall procedure is identical to that of simulation-based approaches for IRT models.
 \stella{Ich denke, ich würde diesen letzten Satz von dir entfernen. Da ich nun umgestellt habe, kommt IRT nach SEM, weshalb er an dieser Stelle keinen Sinn mehr macht. Und da wir weder hier noch bei IRT wirklich beschreiben, wie die Prozedur ist für Null und Alternativmodell, würde ich ihn eher auch nicht ins IRT Kapitel schieben. Was meinst du?}
 
 One option is to use the Monte Carlo simulation by Muthén \& Muthén \citet{muthen2002use} that is implemented in the software \texttt{MPlus} \citep{muthen2017mplus}.
@@ -1079,6 +1075,7 @@ Additionally, the \texttt{WebPower} tool \citep{zhang2018package} also offers po
 	\subsubsection{IRT models}
 
 \stella{Sollen wir hier noch die Überlegung mit einbringen, dass sample-size planning auch so verstanden werden kann, dass die Anzahl der Items bestimmt wird?}
+\stella{Allgmein kann man in diesem Kapitel wahrscheinlich noch etwas mehr schreiben.}
 	In the case of Item-Response-Theory (IRT) models, statistical tests generally apply on discriminating between a predefined null and alternative model.
 Different types of tests and thus different types of effect size measures can be distinguished:
 \begin{itemize}
